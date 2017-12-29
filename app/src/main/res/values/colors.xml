@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="hopsColor2">#e5f7e3</color>
+    <color name="hopsColor1">#f37657</color>
+
+    <color name="colorPrimaryDark">#e5f7e3</color>
+    <color name="colorPrimary">#f37657</color>
+    <color name="colorAccent">#6d524d</color>
+    <color name="colorWhite">#ffffff</color>
+
+    <drawable name="translucent_background">#e0000000</drawable>
+    <drawable name="transparent_background">#00000000</drawable>
+
+    <color name="QRCodeBlackColor">#f37657</color>
+    <color name="QRCodeWhiteColor">#efefef</color>
+
+    <color name="fab1_color">#f37657</color>
+    <color name="fab2_color">#efefef</color>
+
+    <color name="grey">#bfbfbf</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+</resources>

@@ -1,0 +1,35 @@
+﻿<resources>
+    <string name="app_name">Hops</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="makecard_str1_2">Hops is leading the right not to be connected.\nWe prevent excessive linking of social media from phone number exposures by assigning virtual numbers.</string>
+    <string name="makecard_str2_2">Please enter your organization and your position.</string>
+    <string name="makecard_str2_3">Please upload a picture that represents you.</string>
+    <string name="makecard_str3_2">Please enter the social media, blog and webpage link you want to share on your first meeting.
+If you do not want anything, go to the next.</string>
+    <string name="makecard_str4_2">What is your sense of value?\n
+You can think of many things, but please express it concisely in one sentence.</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing emailcompletions."
+    </string>
+    <!-- Firebase Auth -->
+    <string name="auth_failed">Failed to Authenticate</string>
+    <string name="auth_successed">Successed to Authenticate</string>
+
+    <string name="dbname_user_account_settings">Users_account_settings</string>
+    <string name="dbname_users">Users</string>
+
+
+    <string name="kakao_app_key">f7a01ecf6d8d4d0aed7e489c0a48f</string>
+    <string name="kakao_scheme">kakaof7a01ecf6d8d4d0aed7e489c0a48f</string>
+    <string name="kakaolink_host">kakaolink</string>
+    <string name="button">Button</string>
+</resources>
