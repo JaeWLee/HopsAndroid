@@ -8,12 +8,6 @@ The library requires Android **API Level 21+**.
 ![Home](/screenshots/home.png) ![List](/screenshots/list.png) ![Latter](/screenshots/latter.png)
 ![HomeButton](/screenshots/home_button.png) ![ListButton](/screenshots/list_button.png) ![LatterButton](/screenshots/latter_button.png)
 
-# Changelog
-Please see the [Changelog](https://github.com/Clans/FloatingActionButton/wiki/Changelog) page to see what's recently changed.
-
-# Credits
-I used [android-floating-action-button](https://github.com/futuresimple/android-floating-action-button) library by Jerzy Chalupski as a base for development.
-
 # License
 ```
 Copyright 2017 Keun Seok, IM
