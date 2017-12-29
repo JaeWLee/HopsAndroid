@@ -4,9 +4,9 @@
 The library requires Android **API Level 21+**.
 
 # Screenshots
-![Splash](/screenshot/splash.png) ![Makecard4](/screenshot/makecard1.png) ![Makecard4](/screenshot/makecard4.png)
-![Home](/screenshot/home.png) ![List](/screenshot/list.png) ![Latter](/screenshot/latter.png)
-![HomeButton](/screenshot/home_button.png) ![ListButton](/screenshot/list_button.png) ![LatterButton](/screenshot/latter_button.png)
+![Splash](/screenshots/splash.png) ![Makecard4](/screenshots/makecard1.png) ![Makecard4](/screenshots/makecard4.png)
+![Home](/screenshots/home.png) ![List](/screenshots/list.png) ![Latter](/screenshots/latter.png)
+![HomeButton](/screenshots/home_button.png) ![ListButton](/screenshots/list_button.png) ![LatterButton](/screenshots/latter_button.png)
 
 # License
 ```
