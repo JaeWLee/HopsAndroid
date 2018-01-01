@@ -1,6 +1,7 @@
 package com.mineru.hops.Fragment;
 
 import android.app.ActivityOptions;
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mineru.hops.CardDialog;
 import com.mineru.hops.Function.AddGroup.AddGroup1;
 import com.mineru.hops.Function.Code_Scanner;
 import com.mineru.hops.Function.Hopping2;
@@ -40,11 +43,11 @@ import java.util.ArrayList;
 public class List extends Fragment {
     private static final String TAG ="ListFragment";
 
+    private CardDialog mCardDialog;
     private GridView gridView;
     private RecyclerView recyclerView;
     private FirebaseDatabase database;
     private FirebaseAuth auth;
-    public CardView cardView;
     public EditText item_editText;
 
     private FloatingActionMenu fam;
@@ -57,8 +60,8 @@ public class List extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
-        cardView = (CardView) view.findViewById(R.id.card_layout);
         item_editText = (EditText) view.findViewById(R.id.editSearch);
         //gridView = (GridView) view.findViewById(R.id.gridview);
 
@@ -147,9 +150,8 @@ public class List extends Fragment {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ((CustomViewHolder)holder).item_textView1.setText(imageDTOs.get(position).inputName);
             ((CustomViewHolder)holder).item_textView2.setText(imageDTOs.get(position).inputDescription);
-            Glide.with(holder.itemView.getContext()).load(imageDTOs.get(position).imageUrl).into(((CustomViewHolder)holder).imageView);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener(){
+            ((CustomViewHolder)holder).btnFront.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
                     Intent intent = new Intent(view.getContext(), MessageBoard.class);
@@ -164,6 +166,17 @@ public class List extends Fragment {
                     }
                 }
             });
+            ((CustomViewHolder)holder).btnFront.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v){
+                    mCardDialog = new CardDialog(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
+                            imageDTOs.get(position).inputPosition,imageDTOs.get(position).inputDescription,imageDTOs.get(position).inputPhoneNumber,imageDTOs.get(position).uid);
+                    mCardDialog.show();
+                    return false;
+                }
+            });
+            Glide.with(holder.itemView.getContext()).load(imageDTOs.get(position).imageUrl).into(((CustomViewHolder)holder).imageView);
+
         }
 
         @Override
@@ -175,9 +188,11 @@ public class List extends Fragment {
             ImageView imageView;
             TextView item_textView1;
             TextView item_textView2;
+            RelativeLayout btnFront;
 
             public CustomViewHolder(View view) {
                 super(view);
+                btnFront = (RelativeLayout) view.findViewById(R.id.cardLayer);
                 imageView = (ImageView) view.findViewById(R.id.item_imageView);
                 item_textView1 = (TextView) view.findViewById(R.id.item_textView1);
                 item_textView2 = (TextView) view.findViewById(R.id.item_textView2);

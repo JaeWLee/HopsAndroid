@@ -38,36 +38,47 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".MessageBoard" />
         <activity android:name=".Function.Code_Scanner" />
-        <activity android:name=".Function.MakeCard.MakeCard1"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".Function.MakeCard.MakeCard2"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".Function.MakeCard.MakeCard3"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".Function.MakeCard.MakeCard4"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity
+            android:name=".Function.MakeCard.MakeCard1"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".Function.MakeCard.MakeCard2"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".Function.MakeCard.MakeCard3"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".Function.MakeCard.MakeCard4"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".Function.Code_Creator" />
-        <activity android:name=".UserManage.LoginActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".UserManage.RegisterActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity
+            android:name=".UserManage.LoginActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".UserManage.RegisterActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".Function.Hopping" />
-        <activity android:name=".Function.Searching_friends"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity
+            android:name=".Function.Searching_friends"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".UserManage.SignOutActivity" />
-        <activity android:name=".MenuFragment"/>
-        <activity android:name=".Function.AddGroup.AddGroup1"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".Function.AddGroup.AddGroup2"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".Grid_Activity"/>
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize"/>
+        <activity android:name=".MenuFragment" />
+        <activity
+            android:name=".Function.AddGroup.AddGroup1"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".Function.AddGroup.AddGroup2"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".Grid_Activity" />
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize" />
         <activity android:name=".Function.Hopping2">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -84,8 +95,7 @@
                 <data android:scheme="http" />
             </intent-filter>
         </activity>
-
-
+        <activity android:name=".Card_Setting_Modify"></activity>
     </application>
 
 </manifest>

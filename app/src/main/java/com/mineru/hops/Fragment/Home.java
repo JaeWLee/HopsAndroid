@@ -139,7 +139,7 @@ public class Home extends Fragment {
                 @Override
                 public boolean onLongClick(View v){
                     mCardDialog = new CardDialog(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
-                            imageDTOs.get(position).inputPosition);
+                            imageDTOs.get(position).inputPosition,imageDTOs.get(position).inputDescription,imageDTOs.get(position).inputPhoneNumber,imageDTOs.get(position).uid);
                     mCardDialog.show();
                     return false;
                 }
@@ -147,20 +147,17 @@ public class Home extends Fragment {
             ((CustomViewHolder)holder).mCallbtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent("android.intent.action.DIAL", Uri.parse("tel:"+imageDTOs.get(position).inputPhoneNumber)));
+                    Toast.makeText(getContext(), imageDTOs.get(position).inputPhoneNumber, Toast.LENGTH_SHORT).show();
                 }
             });
 
             ((CustomViewHolder)holder).mMailbtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-
-                    Uri uri = Uri.parse("smsto:"+imageDTOs.get(position).inputPhoneNumber);
-                    Intent it = new Intent(Intent.ACTION_SENDTO, uri);
-                    it.putExtra("sms_body", "Hops Message Test");
-                    startActivity(it);
+                    Toast.makeText(getContext(), imageDTOs.get(position).inputPhoneNumber, Toast.LENGTH_SHORT).show();
                 }
             });
+
             Glide.with(holder.itemView.getContext()).load(imageDTOs.get(position).imageUrl).into(((CustomViewHolder)holder).imageView);
             ((CustomViewHolder)holder).pinButton.setOnClickListener(new View.OnClickListener() {
                 @Override
