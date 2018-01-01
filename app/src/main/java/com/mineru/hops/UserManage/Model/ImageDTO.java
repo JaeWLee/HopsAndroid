@@ -15,6 +15,7 @@ public class ImageDTO {
     public String inputPosition;
     public String uid;
     public String userId;
+    public String card_key;
     public int cardpinCount=0;
     public Map<String, Boolean> cardpins = new HashMap<>();
     public String inputName;

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="hopsColor2">#e5f7e3</color>
     <color name="hopsColor1">#f37657</color>
+    <color name="hopsColor2">#e5f7e3</color>
+    <color name="hopsColor3">#ff6147</color>
 
     <color name="colorPrimaryDark">#e5f7e3</color>
     <color name="colorPrimary">#f37657</color>
