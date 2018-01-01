@@ -28,7 +28,9 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.UserManage.Model.MessageBoard_Model;
+import com.mineru.hops.UserManage.Model.NotificationModel;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,16 @@ import java.util.TimeZone;
 
 import java.util.Date;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import com.google.gson.Gson;
+import com.mineru.hops.UserManage.Model.User;
+import com.mineru.hops.UserManage.Model.UserModel;
 
 /**
  * Created by rmstj on 2017-12-12.
@@ -52,6 +64,8 @@ public class MessageBoard extends AppCompatActivity{
     private String uid;
     private String MessageBoardUid;
     private RecyclerView recyclerView;
+
+    private UserModel destinationUserModel;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
     @Override
@@ -91,6 +105,7 @@ public class MessageBoard extends AppCompatActivity{
                     FirebaseDatabase.getInstance().getReference().child("MessageBoards").child(MessageBoardUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            sendGcm();
                             eText.setText("");
                         }
                     });
@@ -101,7 +116,39 @@ public class MessageBoard extends AppCompatActivity{
         checkMessageBoard();
 
     }
+    void sendGcm(){
 
+        Gson gson = new Gson();
+
+        NotificationModel notificationModel = new NotificationModel();
+        notificationModel.to = destinationUserModel.pushToken;
+        notificationModel.notification.title = "보낸이 아이디";
+        notificationModel.notification.text = eText.getText().toString();
+
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"),gson.toJson(notificationModel));
+
+        Request request = new Request.Builder()
+                .header("Content-Type","application/json")
+                .addHeader("Authorization","key=AIzaSyD1Jeh_-q2DSY8kS0elkhWBvOV7Zw-Ifzk")
+                .url("https://gcm-http.googleapis.com/gcm/send")
+                .post(requestBody)
+                .build();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
+
+
+    }
     void  checkMessageBoard(){
 
         FirebaseDatabase.getInstance().getReference().child("MessageBoards").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -128,14 +175,14 @@ public class MessageBoard extends AppCompatActivity{
 
 
         List<MessageBoard_Model.Comment> comments;
-        ImageDTO imageDto;
+
         public RecyclerViewAdapter() {
             comments = new ArrayList<>();
 
             FirebaseDatabase.getInstance().getReference().child("Users").child(MessageBoardUid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    imageDto = dataSnapshot.getValue(ImageDTO.class);
+                    destinationUserModel  = dataSnapshot.getValue(UserModel.class);
                     getMessageList();
 
                 }
