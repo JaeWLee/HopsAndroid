@@ -1,5 +1,6 @@
 package com.mineru.hops.Fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.mineru.hops.CardDialog;
+import com.mineru.hops.Card_Setting_Modify;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.MakeCard.MakeCard1;
 import com.mineru.hops.R;
@@ -137,11 +139,22 @@ public class Home extends Fragment {
 
             ((CustomViewHolder) holder).btnFront.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public boolean onLongClick(View v){
+                public boolean onLongClick(View v) {
+                    ActivityOptions activityOptions = null;
+                    Intent intent = new Intent(getContext(), Card_Setting_Modify.class);
+                    activityOptions = ActivityOptions.makeCustomAnimation(getContext(),R.anim.fromright,R.anim.toleft);
+                    startActivity(intent,activityOptions.toBundle());
+
+                    return false;
+                }
+            });
+
+            ((CustomViewHolder) holder).btnFront.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     mCardDialog = new CardDialog(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
                             imageDTOs.get(position).inputPosition,imageDTOs.get(position).inputDescription,imageDTOs.get(position).inputPhoneNumber,imageDTOs.get(position).uid);
                     mCardDialog.show();
-                    return false;
                 }
             });
             ((CustomViewHolder)holder).mCallbtn.setOnClickListener(new View.OnClickListener(){
