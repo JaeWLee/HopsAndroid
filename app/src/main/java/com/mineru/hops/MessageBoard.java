@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,46 @@ public class MessageBoard extends AppCompatActivity{
         eText = (EditText) findViewById(R.id.message_editText);
         recyclerView = (RecyclerView) findViewById(R.id.messageActivity_reclclerview);
 
+        /*eText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                //Enter key Action
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    //Enter키눌렀을떄 처리
+                    MessageBoard_Model message = new MessageBoard_Model();
+                    message.users.put(uid,true);
+                    message.users.put(destinatonUid,true);
+
+                    if(MessageBoardUid == null){
+                        btn.setEnabled(false);
+                        FirebaseDatabase.getInstance().getReference().child("MessageBoards").push().setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                checkMessageBoard();
+                            }
+                        });
+                    }else {
+
+                        MessageBoard_Model.Comment comment = new MessageBoard_Model.Comment();
+                        comment.uid = uid;
+                        comment.message = eText.getText().toString();
+                        comment.timestamp = ServerValue.TIMESTAMP;
+                        FirebaseDatabase.getInstance().getReference().child("MessageBoards").child(MessageBoardUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                sendGcm();
+                                eText.setText("");
+
+                            }
+                        });
+
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });*/
+
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -107,6 +148,7 @@ public class MessageBoard extends AppCompatActivity{
                         public void onComplete(@NonNull Task<Void> task) {
                             sendGcm();
                             eText.setText("");
+
                         }
                     });
 

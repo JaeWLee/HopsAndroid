@@ -69,6 +69,7 @@ dependencies {
     /*
         BottomNavigationBar
          */
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.tsengvn:Typekit:1.0.0'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.github.ittianyu:BottomNavigationViewEx:1.1.9'

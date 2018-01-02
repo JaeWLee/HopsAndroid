@@ -32,6 +32,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.mineru.hops.CardDialog;
+import com.mineru.hops.CardTouchDialog;
 import com.mineru.hops.Card_Setting_Modify;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.MakeCard.MakeCard1;
@@ -50,6 +51,7 @@ import java.util.Map;
 public class Home extends Fragment {
     private static final String TAG ="HomeFragment";
     private CardDialog mCardDialog;
+    private CardTouchDialog mCardTouchDialog;
     private RecyclerView recyclerView;
     private long card_num;
     private List<ImageDTO> imageDTOs = new ArrayList<>();
@@ -193,6 +195,15 @@ public class Home extends Fragment {
                     mCardDialog.show();
                 }
             });
+
+            ((CustomViewHolder) holder).imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v){
+                    mCardTouchDialog = new CardTouchDialog(getActivity(),imageDTOs.get(position).imageUrl);
+                    mCardTouchDialog.show();
+                }
+            });
+
             ((CustomViewHolder)holder).mCallbtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
