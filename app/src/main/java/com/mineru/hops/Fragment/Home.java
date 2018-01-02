@@ -171,6 +171,13 @@ public class Home extends Fragment {
                 public boolean onLongClick(View v){
                     Intent intent = new Intent(getContext(), Card_Setting_Modify.class);
                     intent.putExtra("card_key",imageDTOs.get(position).card_key);
+                    intent.putExtra("mainImageUrl",imageDTOs.get(position).imageUrl);
+                    intent.putExtra("inputName",imageDTOs.get(position).inputName);
+                    intent.putExtra("inputDescription",imageDTOs.get(position).inputDescription);
+                    intent.putExtra("inputCompany",imageDTOs.get(position).inputCompany);
+                    intent.putExtra("inputPosition",imageDTOs.get(position).inputPosition);
+                    intent.putExtra("inputPhoneNumber",imageDTOs.get(position).inputPhoneNumber);
+                    intent.putExtra("inputEmail",imageDTOs.get(position).inputEmail);
                     ActivityOptions activityOptions = null;
                     activityOptions = ActivityOptions.makeCustomAnimation(getContext(),R.anim.fromright,R.anim.toleft);
                     startActivity(intent,activityOptions.toBundle());
@@ -181,7 +188,6 @@ public class Home extends Fragment {
             ((CustomViewHolder) holder).btnFront.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
-                    Toast.makeText(getContext(), database.getReference().child("Users/"+auth.getCurrentUser().getUid()).child("Card").push().getKey(), Toast.LENGTH_SHORT).show();
                     mCardDialog = new CardDialog(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
                             imageDTOs.get(position).inputPosition,imageDTOs.get(position).inputDescription,imageDTOs.get(position).inputPhoneNumber,imageDTOs.get(position).uid);
                     mCardDialog.show();
