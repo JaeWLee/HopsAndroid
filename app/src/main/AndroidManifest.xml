@@ -78,7 +78,8 @@
         <activity android:name=".Grid_Activity" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize" />
+            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize">
+        </activity>
         <activity android:name=".Function.Hopping2">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -96,6 +97,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Card_Setting_Modify"></activity>
+
     </application>
 
 </manifest>
