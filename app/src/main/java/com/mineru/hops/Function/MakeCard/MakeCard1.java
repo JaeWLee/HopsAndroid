@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.mineru.hops.R;
 
 /**
@@ -18,16 +20,15 @@ public class MakeCard1 extends AppCompatActivity {
     public EditText inputEmail;
     public EditText inputPhoneNumber;
     private Button btnNext;
-
+    public long card_num;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.makecard1_activity);
-
+        //Intent intent = new Intent();
         inputName = (EditText) findViewById(R.id.input_name);
         inputEmail = (EditText) findViewById(R.id.input_email);
         inputPhoneNumber = (EditText) findViewById(R.id.input_pnumber);
-
         btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +37,7 @@ public class MakeCard1 extends AppCompatActivity {
                 intent.putExtra("inputName",inputName.getText().toString());
                 intent.putExtra("inputEmail",inputEmail.getText().toString());
                 intent.putExtra("inputPhoneNumber",inputPhoneNumber.getText().toString());
+                intent.putExtra("card_num",card_num);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

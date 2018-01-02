@@ -7,19 +7,19 @@ package com.mineru.hops.UserManage.Model;
 public class UserAccountSettings {
 
     private String username;
-    private String email;
+    private String verify_email;
 
-    public UserAccountSettings(String usernmame, String email){
+    public UserAccountSettings(String usernmame, String verify_email){
         this.username = usernmame;
-        this.email=email;
+        this.verify_email=verify_email;
     }
     public UserAccountSettings(){
     }
     public String getEmail(){
-        return email;
+        return verify_email;
     }
-    public void setEmail(String email){
-        this.email=email;
+    public void setEmail(String verify_email){
+        this.verify_email=verify_email;
     }
     public String getUsername() {
         return username;
@@ -33,7 +33,7 @@ public class UserAccountSettings {
     public String toString() {
         return "UserAccountSettings{" +
                 ", username='" + username + '\'' +
-                ", verify_email='" + email + '\'' +
+                ", verify_email='" + verify_email + '\'' +
                 '}';
     }
 }

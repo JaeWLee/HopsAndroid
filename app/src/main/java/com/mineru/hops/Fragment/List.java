@@ -10,11 +10,13 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,7 +50,7 @@ public class List extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseDatabase database;
     private FirebaseAuth auth;
-    public EditText item_editText;
+    public LinearLayout l_layout;
 
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
@@ -62,7 +64,7 @@ public class List extends Fragment {
         auth = FirebaseAuth.getInstance();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
-        item_editText = (EditText) view.findViewById(R.id.editSearch);
+        l_layout = (LinearLayout) view.findViewById(R.id.l_layout);
         //gridView = (GridView) view.findViewById(R.id.gridview);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -70,7 +72,7 @@ public class List extends Fragment {
 
         recyclerView.setAdapter(boardRecyclerViewAdapter);
 
-        item_editText.setOnClickListener(new View.OnClickListener() {
+        l_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Searching_friends.class);
@@ -158,7 +160,7 @@ public class List extends Fragment {
                     intent.putExtra("Uid",imageDTOs.get(position).uid);
                     intent.putExtra("imageUrl",imageDTOs.get(position).imageUrl);
                     intent.putExtra("inputName",imageDTOs.get(position).inputName);
-
+                    intent.putExtra("pushToken",imageDTOs.get(position).pushToken);
                     ActivityOptions activityOptions = null;
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
                         activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright,R.anim.toleft);
@@ -175,7 +177,9 @@ public class List extends Fragment {
                     return false;
                 }
             });
-            Glide.with(holder.itemView.getContext()).load(imageDTOs.get(position).imageUrl).into(((CustomViewHolder)holder).imageView);
+            Glide.with(holder.itemView.getContext())
+                    .load(imageDTOs.get(position).imageUrl)
+                    .into(((CustomViewHolder)holder).imageView);
 
         }
 
@@ -192,7 +196,7 @@ public class List extends Fragment {
 
             public CustomViewHolder(View view) {
                 super(view);
-                btnFront = (RelativeLayout) view.findViewById(R.id.cardLayer);
+                btnFront = (RelativeLayout) view.findViewById(R.id.touch_outside);
                 imageView = (ImageView) view.findViewById(R.id.item_imageView);
                 item_textView1 = (TextView) view.findViewById(R.id.item_textView1);
                 item_textView2 = (TextView) view.findViewById(R.id.item_textView2);

@@ -22,4 +22,5 @@ public class ImageDTO {
     public String inputEmail;
     public String inputPhoneNumber;
     public String inputDescription;
+    public String pushToken;
 }

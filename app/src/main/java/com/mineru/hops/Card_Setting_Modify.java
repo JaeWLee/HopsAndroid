@@ -30,7 +30,6 @@ import static com.mineru.hops.Function.MakeCard.MakeCard2.GALLERY_CODE;
 public class Card_Setting_Modify extends AppCompatActivity {
 
     public TextView btnSave;
-    public TextView btnCancel;
 
     public ImageView backgound_img;
     public ImageView main_img;
@@ -57,17 +56,10 @@ public class Card_Setting_Modify extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_setting_modify);
         Intent intent =getIntent();
-        Card_key =intent.getExtras().getString("card_key");
+        Card_key = intent.getStringExtra("card_key");
         setLayout();
 
         btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -102,19 +94,20 @@ public class Card_Setting_Modify extends AppCompatActivity {
             }
         });
     }
+
     void showDialog(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         LayoutInflater layoutInflater = this.getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.dialog_test,null);
-        final EditText editText = (EditText) findViewById(R.id.edit);
+        final EditText eText = (EditText) view.findViewById(R.id.edit);
         builder.setView(view).setPositiveButton("저장", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Map<String,Object> stringObjectMap = new HashMap<>();
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                stringObjectMap.put("inputDescription",editText.getText().toString());
-                FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Card").child(Card_key).updateChildren(stringObjectMap);
+                stringObjectMap.put("inputDescription",eText.getText().toString());
+                FirebaseDatabase.getInstance().getReference().child("Users/"+uid+"/Card/"+Card_key).updateChildren(stringObjectMap);
             }
         }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
@@ -124,9 +117,9 @@ public class Card_Setting_Modify extends AppCompatActivity {
         });
         builder.show();
     }
+
     public void setLayout(){
         btnSave = (TextView) findViewById(R.id.btn_save);
-        btnCancel = (TextView) findViewById(R.id.btn_cancel);
 
         edit_name = (TextView) findViewById(R.id.edit_name);
         l_com = (RelativeLayout) findViewById(R.id.layout_com);

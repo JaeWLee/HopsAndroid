@@ -106,7 +106,7 @@ public class FirebaseMethods {
     public void addNewUSer(String email, String username)
     {
         UserAccountSettings settings = new UserAccountSettings(username,email);
-        User user = new User(userID,email,StringMainpulation.condenseUsername(username));
+        User user = new User(userID,email,StringMainpulation.condenseUsername(username),0);
         DefaultUser d_user = new DefaultUser(userID);
 
         myRef.child(mContext.getString(R.string.dbname_users))

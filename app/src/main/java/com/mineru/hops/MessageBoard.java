@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -28,7 +29,9 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.UserManage.Model.MessageBoard_Model;
+import com.mineru.hops.UserManage.Model.NotificationModel;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,14 @@ import java.util.TimeZone;
 
 import java.util.Date;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import com.google.gson.Gson;
 
 /**
  * Created by rmstj on 2017-12-12.
@@ -52,6 +63,7 @@ public class MessageBoard extends AppCompatActivity{
     private String uid;
     private String MessageBoardUid;
     private RecyclerView recyclerView;
+    private String pushToken;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
     @Override
@@ -63,6 +75,7 @@ public class MessageBoard extends AppCompatActivity{
         destinatonUid = getIntent().getStringExtra("Uid");
         inputName = getIntent().getStringExtra("inputName");
         imageUrl = getIntent().getStringExtra("imageUrl");
+        pushToken = getIntent().getStringExtra("pushToken");
         btn = (Button) findViewById(R.id.message_btn);
         eText = (EditText) findViewById(R.id.message_editText);
         recyclerView = (RecyclerView) findViewById(R.id.messageActivity_reclclerview);
@@ -91,6 +104,7 @@ public class MessageBoard extends AppCompatActivity{
                     FirebaseDatabase.getInstance().getReference().child("MessageBoards").child(MessageBoardUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            sendGcm();
                             eText.setText("");
                         }
                     });
@@ -101,20 +115,52 @@ public class MessageBoard extends AppCompatActivity{
         checkMessageBoard();
 
     }
+    void sendGcm(){
 
-    void  checkMessageBoard(){
+        Gson gson = new Gson();
+
+        NotificationModel notificationModel = new NotificationModel();
+        notificationModel.to = pushToken;
+        notificationModel.notification.title = "보낸이 아이디";
+        notificationModel.notification.text = eText.getText().toString();
+
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"),gson.toJson(notificationModel));
+
+        Request request = new Request.Builder()
+                .header("Content-Type","application/json")
+                .addHeader("Authorization","key=AIzaSyD1Jeh_-q2DSY8kS0elkhWBvOV7Zw-Ifzk")
+                .url("https://gcm-http.googleapis.com/gcm/send")
+                .post(requestBody)
+                .build();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
+
+
+    }
+    void checkMessageBoard(){
 
         FirebaseDatabase.getInstance().getReference().child("MessageBoards").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot item : dataSnapshot.getChildren()){
                     MessageBoard_Model  message = item.getValue(MessageBoard_Model.class);
-                        if(message.users.containsKey(destinatonUid)){
-                            MessageBoardUid = item.getKey();
-                            btn.setEnabled(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(MessageBoard.this));
-                            recyclerView.setAdapter(new RecyclerViewAdapter());
-                        }
+                    if(message.users.containsKey(destinatonUid)){
+                        MessageBoardUid = item.getKey();
+                        btn.setEnabled(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(MessageBoard.this));
+                        recyclerView.setAdapter(new RecyclerViewAdapter());
+                    }
                 }
             }
 
@@ -128,14 +174,14 @@ public class MessageBoard extends AppCompatActivity{
 
 
         List<MessageBoard_Model.Comment> comments;
-        ImageDTO imageDto;
+        ImageDTO imageDto = new ImageDTO();
         public RecyclerViewAdapter() {
             comments = new ArrayList<>();
 
             FirebaseDatabase.getInstance().getReference().child("Users").child(MessageBoardUid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    imageDto = dataSnapshot.getValue(ImageDTO.class);
+                    imageDto  = dataSnapshot.getValue(ImageDTO.class);
                     getMessageList();
 
                 }

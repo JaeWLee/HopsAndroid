@@ -2,13 +2,13 @@ package com.mineru.hops.Fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +38,9 @@ import com.mineru.hops.Function.MakeCard.MakeCard1;
 import com.mineru.hops.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -49,7 +51,7 @@ public class Home extends Fragment {
     private static final String TAG ="HomeFragment";
     private CardDialog mCardDialog;
     private RecyclerView recyclerView;
-
+    private long card_num;
     private List<ImageDTO> imageDTOs = new ArrayList<>();
     private List<String> uidLists = new ArrayList<>();
     private FirebaseDatabase database;
@@ -71,6 +73,23 @@ public class Home extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         final BoardRecyclerViewAdapter boardRecyclerViewAdapter = new BoardRecyclerViewAdapter();
         recyclerView.setAdapter(boardRecyclerViewAdapter);
+
+        database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                            if(snapshot.getKey().equals("card_num")){
+                                card_num= (long) snapshot.getValue();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
         fabAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_add);
         fam = (FloatingActionMenu) view.findViewById(R.id.fab_plus_home);
@@ -114,9 +133,16 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
                 if (view == fabAdd) {
-                    Intent intent = new Intent(getActivity(), MakeCard1.class);
-                    startActivity(intent);
-                    fam.close(true);
+
+                    if(card_num>=3L){
+                        Toast.makeText(getContext(), "더 이상 카드를 생성할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        fam.close(true);
+                    }
+                    else if(card_num<3L){
+                        Intent intent = new Intent(getActivity(), MakeCard1.class);
+                        startActivity(intent);
+                        fam.close(true);
+                    }
                 }
             }
         };
@@ -153,6 +179,7 @@ public class Home extends Fragment {
             ((CustomViewHolder) holder).btnFront.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
+                    Toast.makeText(getContext(), database.getReference().child("Users/"+auth.getCurrentUser().getUid()).child("Card").push().getKey(), Toast.LENGTH_SHORT).show();
                     mCardDialog = new CardDialog(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
                             imageDTOs.get(position).inputPosition,imageDTOs.get(position).inputDescription,imageDTOs.get(position).inputPhoneNumber,imageDTOs.get(position).uid);
                     mCardDialog.show();
@@ -182,6 +209,15 @@ public class Home extends Fragment {
 
             if (imageDTOs.get(position).cardpins.containsKey(auth.getCurrentUser().getUid())) {
                 ((CustomViewHolder)holder).pinButton.setImageResource(R.drawable.icon_cardpin_on);
+                Map<String,Object> stringObjectMap = new HashMap<>();
+                stringObjectMap.put("imageUrl",imageDTOs.get(position).imageUrl);
+                stringObjectMap.put("inputCompany",imageDTOs.get(position).inputCompany);
+                stringObjectMap.put("inputDescription",imageDTOs.get(position).inputDescription);
+                stringObjectMap.put("inputName",imageDTOs.get(position).inputName);
+                stringObjectMap.put("inputPhoneNumber",imageDTOs.get(position).inputPhoneNumber);
+                stringObjectMap.put("inputPosition",imageDTOs.get(position).inputPosition);
+                stringObjectMap.put("inputEmail",imageDTOs.get(position).inputEmail);
+                database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Main").updateChildren(stringObjectMap);
 
             }else {
                 ((CustomViewHolder)holder).pinButton.setImageResource(R.drawable.icon_cardpin_off);
@@ -237,7 +273,32 @@ public class Home extends Fragment {
                     database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card/").child(uidLists.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                                                if(snapshot.getKey().equals("card_num")){
+                                                    card_num= (long) snapshot.getValue();
+                                                }
+                                            }
+                                        }
 
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                            if(card_num==3L){
+                                card_num=2L;
+                            } else if(card_num==2L){
+                                card_num=1L;
+                            }else if(card_num==1L){
+                                card_num=0;
+                            }
+                            Map<String,Object> card= new HashMap<String,Object>();
+                            card.put("card_num",card_num);
+                            database.getReference().child("Users/" + auth.getCurrentUser().getUid()).updateChildren(card);
                             Toast.makeText(getActivity(), "Delete Success", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {

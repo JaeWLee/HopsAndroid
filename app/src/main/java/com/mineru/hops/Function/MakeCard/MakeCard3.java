@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.mineru.hops.R;
 
 /**
@@ -16,7 +18,7 @@ public class MakeCard3 extends AppCompatActivity {
     private static final String TAG = "MakeCard3";
 
     private String[] str = new String[6];
-
+    private long card_num;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +27,10 @@ public class MakeCard3 extends AppCompatActivity {
         str[0] = intent.getExtras().getString("inputName");
         str[1] = intent.getExtras().getString("inputEmail");
         str[2] = intent.getExtras().getString("inputPhoneNumber");
-        str[3] =intent.getExtras().getString("inputCompany");
-        str[4] =intent.getExtras().getString("inputPosition");
-        str[5] =intent.getExtras().getString("imagePath");
-
+        str[3] = intent.getExtras().getString("inputCompany");
+        str[4] = intent.getExtras().getString("inputPosition");
+        str[5] = intent.getExtras().getString("imagePath");
+        //card_num = intent.getLongExtra("card_num",card_num);
         Log.v(TAG,"imagePath : "+str[5]);
 
         Button btnNext = (Button) findViewById(R.id.btnNext);
@@ -42,6 +44,7 @@ public class MakeCard3 extends AppCompatActivity {
                 intent.putExtra("inputCompany",str[3]);
                 intent.putExtra("inputPosition",str[4]);
                 intent.putExtra("imagePath",str[5]);
+                //intent.putExtra("card_num",card_num);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

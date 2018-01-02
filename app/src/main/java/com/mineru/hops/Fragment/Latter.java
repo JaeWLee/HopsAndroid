@@ -2,6 +2,7 @@ package com.mineru.hops.Fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +29,7 @@ import com.mineru.hops.Function.MakeCard.MakeCard1;
 import com.mineru.hops.MessageBoard;
 import com.mineru.hops.R;
 import com.mineru.hops.UserManage.Model.MessageBoard_Model;
+import com.mineru.hops.UserManage.Model.User;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -47,6 +50,8 @@ public class Latter extends Fragment {
     private com.github.clans.fab.FloatingActionButton fabWrite;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+
+    private ArrayList<ImageDTO> imageDTOs = new ArrayList<>();
 
     @Nullable
     @Override
@@ -137,7 +142,8 @@ public class Latter extends Fragment {
                     destinationUsers.add(destinationUid);
                 }
             }
-            FirebaseDatabase.getInstance().getReference().child("Users").child(destinationUid+"/Card").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            FirebaseDatabase.getInstance().getReference().child("Users").child(destinationUid+"/Main").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     ImageDTO imageDTO = dataSnapshot.getValue(ImageDTO.class);
@@ -159,15 +165,18 @@ public class Latter extends Fragment {
             String lastMessageKey = (String) commentMap.keySet().toArray()[0];
             customViewHolder.textView_last_message.setText(messaageboard.get(position).comments.get(lastMessageKey).message);
 
-            customViewHolder.imageView.setOnClickListener(new View.OnClickListener(){
+            customViewHolder.touch_outside.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
                     Intent intent = new Intent(view.getContext(), MessageBoard.class);
-                    intent.putExtra("Uid",destinationUsers.get(position));
-
+                    //intent.putExtra("Uid",destinationUsers.get(position));
+                    intent.putExtra("Uid",imageDTOs.get(position).uid);
+                    intent.putExtra("imageUrl",imageDTOs.get(position).imageUrl);
+                    intent.putExtra("inputName",imageDTOs.get(position).inputName);
+                    intent.putExtra("pushToken",imageDTOs.get(position).pushToken);
                     ActivityOptions activityOptions = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(), R.anim.fromright,R.anim.toleft);
+                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
+                        activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright,R.anim.toleft);
                         startActivity(intent,activityOptions.toBundle());
                     }
                 }
@@ -188,10 +197,10 @@ public class Latter extends Fragment {
             public TextView textView_title;
             public TextView textView_last_message;
             public TextView textView_timestamp;
-
+            public LinearLayout touch_outside;
             public CustomViewHolder(View view) {
                 super(view);
-
+                touch_outside = (LinearLayout) view.findViewById(R.id.touch_outside);
                 imageView = (ImageView) view.findViewById(R.id.chatitem_imageview);
                 textView_last_message = (TextView) view.findViewById(R.id.chatitem_textview_lastMessage);
                 textView_title = (TextView) view.findViewById(R.id.chatitem_textview_title);
