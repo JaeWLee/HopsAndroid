@@ -185,6 +185,7 @@ public class Latter extends Fragment {
             long unixTime = (long) messaageboard.get(position).comments.get(lastMessageKey).timestamp;
             Date date = new Date(unixTime);
             customViewHolder.textView_timestamp.setText(simpleDateFormat.format(date));
+
         }
 
         @Override

@@ -122,6 +122,7 @@ public class Home extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+
             }
         });
 

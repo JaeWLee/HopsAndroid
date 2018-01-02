@@ -153,6 +153,7 @@ public class List extends Fragment {
             ((CustomViewHolder)holder).item_textView1.setText(imageDTOs.get(position).inputName);
             ((CustomViewHolder)holder).item_textView2.setText(imageDTOs.get(position).inputDescription);
 
+
             ((CustomViewHolder)holder).btnFront.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
