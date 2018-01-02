@@ -167,6 +167,7 @@ public class Card_Setting_Modify extends AppCompatActivity {
         }else if(type==5){
             editText.setHint("이름을 입력하세요");
         }
+
         builder.setView(view).setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

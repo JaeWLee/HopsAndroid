@@ -207,6 +207,7 @@ public class Home extends Fragment {
                 }
             });
 
+
             Glide.with(holder.itemView.getContext()).load(imageDTOs.get(position).imageUrl).into(((CustomViewHolder)holder).imageView);
             ((CustomViewHolder)holder).pinButton.setOnClickListener(new View.OnClickListener() {
                 @Override
