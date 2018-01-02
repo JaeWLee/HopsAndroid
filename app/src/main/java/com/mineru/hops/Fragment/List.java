@@ -166,6 +166,7 @@ public class List extends Fragment {
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
                         activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright,R.anim.toleft);
                         startActivity(intent,activityOptions.toBundle());
+
                     }
                 }
             });

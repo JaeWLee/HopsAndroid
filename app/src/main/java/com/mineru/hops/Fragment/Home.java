@@ -74,6 +74,7 @@ public class Home extends Fragment {
         final BoardRecyclerViewAdapter boardRecyclerViewAdapter = new BoardRecyclerViewAdapter();
         recyclerView.setAdapter(boardRecyclerViewAdapter);
 
+
         database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

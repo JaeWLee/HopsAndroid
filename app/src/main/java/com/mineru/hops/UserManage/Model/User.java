@@ -55,5 +55,6 @@ public class User {
                 ", username='" + username + '\'' +
                 ", card_num='"+ card_num +'\''+
                 '}';
+
     }
 }

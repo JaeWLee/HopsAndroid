@@ -9,6 +9,7 @@ public class UserAccountSettings {
     private String username;
     private String verify_email;
 
+
     public UserAccountSettings(String usernmame, String verify_email){
         this.username = usernmame;
         this.verify_email=verify_email;

@@ -174,6 +174,7 @@ public class Latter extends Fragment {
                     intent.putExtra("imageUrl",imageDTOs.get(position).imageUrl);
                     intent.putExtra("inputName",imageDTOs.get(position).inputName);
                     intent.putExtra("pushToken",imageDTOs.get(position).pushToken);
+
                     ActivityOptions activityOptions = null;
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
                         activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright,R.anim.toleft);

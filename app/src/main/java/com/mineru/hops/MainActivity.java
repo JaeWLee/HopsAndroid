@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         Map<String,Object> map = new HashMap<>();
         map.put("pushToken",token);
 
+
         FirebaseDatabase.getInstance().getReference().child("Users").child(uid).updateChildren(map);
     }
 }

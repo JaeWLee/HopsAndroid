@@ -34,7 +34,6 @@ public class MakeCard2 extends AppCompatActivity {
     private Button btnNext;
     private String imagePath;
     private String[] str = new String[3];
-    private long card_num;
 
     private static final String TAG = "MakeCard2";
 
@@ -45,10 +44,10 @@ public class MakeCard2 extends AppCompatActivity {
         setContentView(R.layout.makecard2_activity);
 
         Intent intent = getIntent();
-        //card_num = intent.getLongExtra("card_num",card_num);
         str[0] = intent.getExtras().getString("inputName");
         str[1] = intent.getExtras().getString("inputEmail");
         str[2] = intent.getExtras().getString("inputPhoneNumber");
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -62,7 +61,6 @@ public class MakeCard2 extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //upload(imagePath);
                 Intent intent = new Intent(MakeCard2.this, MakeCard3.class);
                 intent.putExtra("inputName", str[0]);
                 intent.putExtra("inputEmail", str[1]);
@@ -70,7 +68,6 @@ public class MakeCard2 extends AppCompatActivity {
                 intent.putExtra("inputCompany", inputCompany.getText().toString());
                 intent.putExtra("inputPosition", inputPosition.getText().toString());
                 intent.putExtra("imagePath",imagePath);
-                //intent.putExtra("card_num",card_num);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

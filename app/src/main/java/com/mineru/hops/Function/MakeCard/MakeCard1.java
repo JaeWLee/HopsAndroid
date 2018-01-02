@@ -20,12 +20,12 @@ public class MakeCard1 extends AppCompatActivity {
     public EditText inputEmail;
     public EditText inputPhoneNumber;
     private Button btnNext;
+
     public long card_num;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.makecard1_activity);
-        //Intent intent = new Intent();
         inputName = (EditText) findViewById(R.id.input_name);
         inputEmail = (EditText) findViewById(R.id.input_email);
         inputPhoneNumber = (EditText) findViewById(R.id.input_pnumber);

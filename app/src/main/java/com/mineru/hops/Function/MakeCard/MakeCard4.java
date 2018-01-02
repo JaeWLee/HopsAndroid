@@ -46,6 +46,7 @@ public class MakeCard4 extends AppCompatActivity {
     private String card_key;
     private long card_num;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

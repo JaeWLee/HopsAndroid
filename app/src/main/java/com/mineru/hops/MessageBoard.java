@@ -71,6 +71,7 @@ public class MessageBoard extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messageboard_layout);
 
+
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         destinatonUid = getIntent().getStringExtra("Uid");
         inputName = getIntent().getStringExtra("inputName");
