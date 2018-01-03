@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,6 +73,8 @@ public class MyAdapter extends BaseAdapter {
                     .findViewById(R.id.grid_item_image);
 
             LinearLayout main = (LinearLayout) gridView.findViewById(R.id.main_grid);
+
+            CheckBox checkBox = (CheckBox) gridView.findViewById(R.id.btnCheck);
 
             main.setBackgroundColor(paint.getColor());
 

@@ -7,7 +7,7 @@
 
     <ImageView
         android:src="@drawable/hops_logo"
-        android:background="#FFFFBB33"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="64dp" />
     <EditText

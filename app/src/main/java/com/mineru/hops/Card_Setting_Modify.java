@@ -152,7 +152,7 @@ public class Card_Setting_Modify extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         LayoutInflater layoutInflater = this.getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.dialog_test,null);
+        View view = layoutInflater.inflate(R.layout.card_setting_dialog,null);
         final EditText editText = (EditText) view.findViewById(R.id.edit);
         if(type==0){
             editText.setHint("상태 메세지를 입력하세요");

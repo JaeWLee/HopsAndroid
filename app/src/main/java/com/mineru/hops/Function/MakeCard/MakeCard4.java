@@ -1,7 +1,6 @@
 package com.mineru.hops.Function.MakeCard;
 
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,11 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.mineru.hops.UserManage.Model.ImageDTO;
+import com.mineru.hops.Function.AddGroup.Add_Firends_Group;
 import com.mineru.hops.R;
 
 import java.io.File;
@@ -45,18 +42,16 @@ public class MakeCard4 extends AppCompatActivity {
     private FirebaseDatabase database;
     private String card_key;
     private long card_num;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.makecard4_activity);
 
+        setContentView(R.layout.makecard4_activity);
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         str[0] = intent.getExtras().getString("inputName");
         str[1] = intent.getExtras().getString("inputEmail");
         str[2] = intent.getExtras().getString("inputPhoneNumber");
@@ -93,9 +88,11 @@ public class MakeCard4 extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                upload(str[5]);
-                finish();
+                //upload(str[5]);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                Intent intent = new Intent(MakeCard4.this,Add_Firends_Group.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -142,6 +139,6 @@ public class MakeCard4 extends AppCompatActivity {
                 database.getReference().child("Users/" + auth.getCurrentUser().getUid()).updateChildren(card);
             }
         });
-
     }
+
 }

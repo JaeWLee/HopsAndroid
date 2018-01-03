@@ -55,7 +55,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".Function.MakeCard.MakeCard4"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".Function.Code_Creator" />
         <activity
             android:name=".UserManage.LoginActivity"
@@ -97,7 +97,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Card_Setting_Modify"></activity>
-
+        <activity android:name=".Function.AddGroup.Add_Firends_Group"/>
     </application>
 
 </manifest>

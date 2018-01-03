@@ -51,6 +51,7 @@ import java.util.Map;
 public class Home extends Fragment {
     private static final String TAG ="HomeFragment";
     private CardDialog mCardDialog;
+
     private CardTouchDialog mCardTouchDialog;
     private RecyclerView recyclerView;
     private long card_num;
@@ -59,7 +60,6 @@ public class Home extends Fragment {
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private FirebaseStorage storage;
-
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabAdd;
 
