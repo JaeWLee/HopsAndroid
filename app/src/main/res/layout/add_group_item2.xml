@@ -1,0 +1,21 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="70dp"
+    android:layout_height="70dp">
+    <ImageView
+        android:id="@+id/grid_item_image2"
+        android:gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/round_view2">
+    </ImageView>
+    <TextView
+        android:id="@+id/group_name2"
+        android:layout_below="@+id/grid_item_image2"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="Name"/>
+</RelativeLayout>

@@ -99,7 +99,8 @@ public class List extends Fragment {
         });
 
 
-        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Friends").addValueEventListener(new ValueEventListener() {
+        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Friends")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageDTOs.clear();

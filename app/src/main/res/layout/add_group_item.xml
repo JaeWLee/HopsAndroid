@@ -1,32 +1,29 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="190dp"
-    android:layout_height="190dp"
-    android:layout_marginTop="15dp"
-    android:layout_marginBottom="15dp"
-    android:layout_marginRight="15dp"
-    android:layout_marginLeft="15dp">
+    android:layout_width="180dp"
+    android:layout_height="180dp">
 
     <ImageView
         android:id="@+id/grid_item_image"
         android:gravity="center"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="#000000"
+        android:background="@drawable/round_view2"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginLeft="25dp">
+        android:layout_marginLeft="15dp">
     </ImageView>
     <LinearLayout
         android:id="@+id/main_grid"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:orientation="vertical"
+        android:background="@drawable/round_view2"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="15dp"
         android:clickable="true">
 
         <TextView
@@ -57,9 +54,12 @@
         android:id="@+id/btnCheck"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:shadowColor="#000000"
         android:background="@drawable/hops_button" />
 
 </RelativeLayout>

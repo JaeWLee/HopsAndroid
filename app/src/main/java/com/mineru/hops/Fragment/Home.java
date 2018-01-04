@@ -108,7 +108,8 @@ public class Home extends Fragment {
                 }
             }
         });
-        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card/").addValueEventListener(new ValueEventListener() {
+        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card/")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -131,7 +132,6 @@ public class Home extends Fragment {
 
         return view;
     }
-
     private View.OnClickListener onButtonClick() {
         return new View.OnClickListener() {
             @Override
@@ -219,7 +219,10 @@ public class Home extends Fragment {
             });
 
 
-            Glide.with(holder.itemView.getContext()).load(imageDTOs.get(position).imageUrl).into(((CustomViewHolder)holder).imageView);
+            Glide.with(holder.itemView.getContext())
+                    .load(imageDTOs.get(position).imageUrl)
+                    .into(((CustomViewHolder)holder).imageView);
+
             ((CustomViewHolder)holder).pinButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -286,11 +289,13 @@ public class Home extends Fragment {
         }
         private void delete_content(final int position){
 
-            storage.getReference().child("Users/"+auth.getCurrentUser().getUid()).child(imageDTOs.get(position).imageName).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            storage.getReference().child("Users/"+auth.getCurrentUser().getUid()).child(imageDTOs.get(position).imageName)
+                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
 
-                    database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card/").child(uidLists.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card/")
+                            .child(uidLists.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()

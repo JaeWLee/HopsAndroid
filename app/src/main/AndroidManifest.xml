@@ -75,7 +75,6 @@
         <activity
             android:name=".Function.AddGroup.AddGroup2"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".Grid_Activity" />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan|stateHidden|adjustResize">
