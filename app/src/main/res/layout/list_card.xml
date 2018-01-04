@@ -1,79 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="180dp">
 
+    <ImageView
+        android:id="@+id/list_image"
+        android:gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/round_view2"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp">
+    </ImageView>
+    <LinearLayout
+        android:id="@+id/list_layout"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:background="@drawable/test_view"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:clickable="true">
+        <TextView
+            android:id="@+id/group_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="New"
+            android:textSize="20dp" />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        app:cardBackgroundColor="#efefef"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="7dp"
-        app:cardMaxElevation="15dp"
-        app:contentPaddingLeft="0dp"
-        app:contentPaddingRight="0dp">
-
-        <RelativeLayout
-            android:id="@+id/touch_outside"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:orientation="vertical">
-
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/item_imageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/round_view"
-                android:scaleType="centerCrop" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignTop="@+id/item_imageView"
-                android:layout_toEndOf="@+id/item_imageView"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/item_textView1"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center|left"
-                    android:text="name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-
-                <TextView
-                    android:id="@+id/item_textView2"
-                    android:layout_width="160dp"
-                    android:layout_height="60dp"
-                    android:gravity="center|right"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:text="description"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-
-    </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/group_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="normal"
+            android:text="1"
+            android:textSize="10dp" />
+    </LinearLayout>
 
 </RelativeLayout>

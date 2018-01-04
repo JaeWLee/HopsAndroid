@@ -2,9 +2,11 @@ package com.mineru.hops.Fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,12 +43,13 @@ import java.util.ArrayList;
 public class List extends Fragment {
     private static final String TAG ="ListFragment";
 
-    private CardDialog mCardDialog;
-    private GridView gridView;
-    private RecyclerView recyclerView;
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     public LinearLayout l_layout;
+    public int test=0;
+    private RecyclerView recyclerView;
+    private BoardRecyclerViewAdapter mAdapter;
+    private GridLayoutManager recyclerManager = new GridLayoutManager(getContext(),2);
 
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
@@ -60,13 +63,24 @@ public class List extends Fragment {
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
+
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
+        recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+            @Override
+            public int getSpanSize(int position){
+                if(position==0) return 2;
+                return 1;
+            }
+        });
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+
+        mAdapter = new BoardRecyclerViewAdapter();
+        recyclerView.setAdapter(mAdapter);
+
+
         l_layout = (LinearLayout) view.findViewById(R.id.l_layout);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        final BoardRecyclerViewAdapter boardRecyclerViewAdapter = new BoardRecyclerViewAdapter();
-
-        recyclerView.setAdapter(boardRecyclerViewAdapter);
 
         l_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +121,7 @@ public class List extends Fragment {
                     //ImageDTO imageDTO = snapshot.getValue(ImageDTO.class);
                     //imageDTOs.add(imageDTO);
                 }
-                boardRecyclerViewAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
 
             }
 
@@ -116,6 +130,8 @@ public class List extends Fragment {
 
             }
         });
+
+
         return view;
     }
     private View.OnClickListener onButtonClick() {
@@ -138,7 +154,8 @@ public class List extends Fragment {
             }
         };
     }
-    class BoardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+     public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -150,27 +167,49 @@ public class List extends Fragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            ((CustomViewHolder)holder).item_textView1.setText(imageDTOs.get(position).inputName);
-            ((CustomViewHolder)holder).item_textView2.setText(imageDTOs.get(position).inputDescription);
+            ((CustomViewHolder)holder).group_title.setText(group_models.get(position).group_name);
+            ((CustomViewHolder)holder).group_number.setText(String.valueOf(group_models.get(position).m_num));
 
 
-            ((CustomViewHolder)holder).btnFront.setOnClickListener(new View.OnClickListener(){
+            ((CustomViewHolder)holder).list_layout.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    Intent intent = new Intent(view.getContext(), MessageBoard.class);
-                    intent.putExtra("Uid",imageDTOs.get(position).uid);
-                    intent.putExtra("imageUrl",imageDTOs.get(position).imageUrl);
-                    intent.putExtra("inputName",imageDTOs.get(position).inputName);
-                    intent.putExtra("pushToken",imageDTOs.get(position).pushToken);
+                    /*Intent intent = new Intent(view.getContext(), MessageBoard.class);
+                    intent.putExtra("group_name",group_models.get(position).group_name);
                     ActivityOptions activityOptions = null;
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
                         activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright,R.anim.toleft);
                         startActivity(intent,activityOptions.toBundle());
 
+                    }*/
+                    if(test==0){
+                        /*recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        final BoardRecyclerViewAdapter boardRecyclerViewAdapter = new BoardRecyclerViewAdapter();
+                        recyclerView.setAdapter(boardRecyclerViewAdapter);*/
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+                        mAdapter = new BoardRecyclerViewAdapter();
+                        recyclerView.setAdapter(mAdapter);
+                        test=1;
+                    }else if(test==1){
+                        recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+                            @Override
+                            public int getSpanSize(int position){
+                                if(position==0) return 2;
+                                return 1;
+                            }
+                        });
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+                        mAdapter = new BoardRecyclerViewAdapter();
+                        recyclerView.setAdapter(mAdapter);
+                        test=0;
                     }
+
                 }
             });
-            ((CustomViewHolder)holder).btnFront.setOnLongClickListener(new View.OnLongClickListener() {
+
+            /*((CustomViewHolder)holder).list_layout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v){
                     mCardDialog = new CardDialog(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
@@ -178,30 +217,34 @@ public class List extends Fragment {
                     mCardDialog.show();
                     return false;
                 }
-            });
+            });*/
             Glide.with(holder.itemView.getContext())
-                    .load(imageDTOs.get(position).imageUrl)
-                    .into(((CustomViewHolder)holder).imageView);
+                    .load(group_models.get(position).imageUrl)
+                    .into(((CustomViewHolder)holder).list_image);
 
         }
 
         @Override
         public int getItemCount() {
-            return imageDTOs.size();
+            return group_models.size();
         }
 
         private class CustomViewHolder extends RecyclerView.ViewHolder {
-            ImageView imageView;
-            TextView item_textView1;
-            TextView item_textView2;
-            RelativeLayout btnFront;
+            ImageView list_image;
+            LinearLayout list_layout;
+            TextView group_title;
+            TextView group_number;
+            GradientDrawable drawable;
 
             public CustomViewHolder(View view) {
                 super(view);
-                btnFront = (RelativeLayout) view.findViewById(R.id.touch_outside);
-                imageView = (ImageView) view.findViewById(R.id.item_imageView);
-                item_textView1 = (TextView) view.findViewById(R.id.item_textView1);
-                item_textView2 = (TextView) view.findViewById(R.id.item_textView2);
+                drawable = (GradientDrawable) view.getContext().getDrawable(R.drawable.round_view2);
+                list_layout = (LinearLayout) view.findViewById(R.id.list_layout);
+                list_image = (ImageView) view.findViewById(R.id.list_image);
+                list_image.setBackground(drawable);
+                list_image.setClipToOutline(true);
+                group_title = (TextView) view.findViewById(R.id.group_title);
+                group_number = (TextView) view.findViewById(R.id.group_number);
             }
         }
     }

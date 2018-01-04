@@ -11,5 +11,5 @@ public class Group_model {
     public Map<String,String> friedns = new HashMap<>();
     public int m_num;
     public String group_name;
-    private String imageUrl;
+    public String imageUrl;
 }

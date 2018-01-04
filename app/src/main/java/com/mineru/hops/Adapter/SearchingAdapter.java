@@ -48,8 +48,8 @@ public class SearchingAdapter extends BaseAdapter {
             convertView = inflate.inflate(R.layout.list_card,null);
 
             viewHolder = new ViewHolder();
-            viewHolder.label = (TextView) convertView.findViewById(R.id.item_textView1);
-            viewHolder.label = (TextView) convertView.findViewById(R.id.item_textView2);
+            viewHolder.label = (TextView) convertView.findViewById(R.id.group_title);
+            viewHolder.label = (TextView) convertView.findViewById(R.id.group_number);
 
             convertView.setTag(viewHolder);
         }else{

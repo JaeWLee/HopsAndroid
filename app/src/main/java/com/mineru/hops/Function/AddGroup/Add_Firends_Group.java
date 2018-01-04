@@ -55,11 +55,13 @@ public class Add_Firends_Group extends AppCompatActivity{
     public String uid;
     public String card_key;
     private List<Grid_Item_list> grid_item_lists= new ArrayList<>();
+
     private RecyclerView recyclerView1;
     private RecyclerGridViewAdapter gridAdapter1;
+    private GridLayoutManager gridManager = new GridLayoutManager(getApplication(),2);
+
     public List<String> str = new ArrayList<>();
     public List<String> group_key= new ArrayList<>();
-    private GridLayoutManager gridManager = new GridLayoutManager(getApplication(),2);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
