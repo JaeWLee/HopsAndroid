@@ -1,19 +1,15 @@
 package com.mineru.hops.Fragment;
 
 import android.app.ActivityOptions;
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,13 +27,13 @@ import com.mineru.hops.CardDialog;
 import com.mineru.hops.Function.AddGroup.AddGroup1;
 import com.mineru.hops.Function.Code_Scanner;
 import com.mineru.hops.Function.Hopping2;
+import com.mineru.hops.UserManage.Model.Group_model;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.Searching_friends;
 import com.mineru.hops.MessageBoard;
 import com.mineru.hops.R;
 
 import java.util.ArrayList;
-
 /**
  * Created by Mineru on 2017-09-08.
  */
@@ -56,6 +52,7 @@ public class List extends Fragment {
     private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
 
     private java.util.List<ImageDTO> imageDTOs = new ArrayList<>();
+    private java.util.List<Group_model> group_models =new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.list_fragment_layout,container,false);
@@ -65,7 +62,6 @@ public class List extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
         l_layout = (LinearLayout) view.findViewById(R.id.l_layout);
-        //gridView = (GridView) view.findViewById(R.id.gridview);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         final BoardRecyclerViewAdapter boardRecyclerViewAdapter = new BoardRecyclerViewAdapter();
@@ -99,14 +95,17 @@ public class List extends Fragment {
         });
 
 
-        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Friends")
+        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group")
                 .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                imageDTOs.clear();
+                group_models.clear();
+                //imageDTOs.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    ImageDTO imageDTO = snapshot.getValue(ImageDTO.class);
-                    imageDTOs.add(imageDTO);
+                    Group_model group_model = snapshot.getValue(Group_model.class);
+                    group_models.add(group_model);
+                    //ImageDTO imageDTO = snapshot.getValue(ImageDTO.class);
+                    //imageDTOs.add(imageDTO);
                 }
                 boardRecyclerViewAdapter.notifyDataSetChanged();
 

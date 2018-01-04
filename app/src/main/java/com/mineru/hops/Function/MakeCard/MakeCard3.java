@@ -2,6 +2,7 @@ package com.mineru.hops.Function.MakeCard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ public class MakeCard3 extends AppCompatActivity {
     private static final String TAG = "MakeCard3";
 
     private String[] str = new String[6];
+    private Button btnNext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +33,13 @@ public class MakeCard3 extends AppCompatActivity {
         str[5] = intent.getExtras().getString("imagePath");
         Log.v(TAG,"imagePath : "+str[5]);
 
-        Button btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnNext.setEnabled(false);
+                Handler h = new Handler();
+                h.postDelayed(new splashhandler(),1000);
                 Intent intent = new Intent(MakeCard3.this,MakeCard4.class);
                 intent.putExtra("inputName",str[0]);
                 intent.putExtra("inputEmail",str[1]);
@@ -47,5 +52,11 @@ public class MakeCard3 extends AppCompatActivity {
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
+    }
+    class splashhandler implements Runnable{
+        public void run(){
+            btnNext.setEnabled(true);
+
+        }
     }
 }

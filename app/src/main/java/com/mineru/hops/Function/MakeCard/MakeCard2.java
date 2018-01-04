@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -61,6 +62,9 @@ public class MakeCard2 extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnNext.setEnabled(false);
+                Handler h = new Handler();
+                h.postDelayed(new splashhandler2(),1000);
                 Intent intent = new Intent(MakeCard2.this, MakeCard3.class);
                 intent.putExtra("inputName", str[0]);
                 intent.putExtra("inputEmail", str[1]);
@@ -78,13 +82,27 @@ public class MakeCard2 extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                inputLogo.setEnabled(false);
+                Handler h = new Handler();
+                h.postDelayed(new splashhandler1(),1000);
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                 startActivityForResult(intent, GALLERY_CODE);
             }
         });
     }
+    class splashhandler1 implements Runnable{
+        public void run(){
+            inputLogo.setEnabled(true);
 
+        }
+    }
+    class splashhandler2 implements Runnable{
+        public void run(){
+            btnNext.setEnabled(true);
+
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GALLERY_CODE) {

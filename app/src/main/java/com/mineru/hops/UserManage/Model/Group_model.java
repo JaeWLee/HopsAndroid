@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by mineru on 2018-01-04.
+ * Created by rmstj on 2018-01-05.
  */
 
-public class Grid_Item_list {
-    public String imageUrl;
+public class Group_model {
+    public Map<String,String> friedns = new HashMap<>();
     public int m_num;
     public String group_name;
-    public Map<String, String> friends = new HashMap<>();
+    private String imageUrl;
 }

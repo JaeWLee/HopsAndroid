@@ -3,6 +3,7 @@ package com.mineru.hops.Function.MakeCard;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -88,6 +89,9 @@ public class MakeCard4 extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnNext.setEnabled(false);
+                Handler h = new Handler();
+                h.postDelayed(new splashhandler(),1000);
                 //upload(str[5]);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 Intent intent = new Intent(MakeCard4.this,Add_Firends_Group.class);
@@ -96,6 +100,13 @@ public class MakeCard4 extends AppCompatActivity {
             }
         });
 
+    }
+
+    class splashhandler implements Runnable{
+        public void run(){
+            btnNext.setEnabled(true);
+
+        }
     }
     private void upload(String uri){
         StorageReference storageRef = storage.getReferenceFromUrl("gs://hops2lattop.appspot.com");

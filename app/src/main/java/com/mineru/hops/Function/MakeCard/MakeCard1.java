@@ -2,6 +2,7 @@ package com.mineru.hops.Function.MakeCard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,9 @@ public class MakeCard1 extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnNext.setEnabled(false);
+                Handler h = new Handler();
+                h.postDelayed(new splashhandler(),1000);
                 Intent intent = new Intent(MakeCard1.this,MakeCard2.class);
                 intent.putExtra("inputName",inputName.getText().toString());
                 intent.putExtra("inputEmail",inputEmail.getText().toString());
@@ -43,5 +47,11 @@ public class MakeCard1 extends AppCompatActivity {
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
+    }
+    class splashhandler implements Runnable{
+        public void run(){
+            btnNext.setEnabled(true);
+
+        }
     }
 }
