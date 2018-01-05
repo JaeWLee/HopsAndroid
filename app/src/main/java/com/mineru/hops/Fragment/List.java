@@ -280,19 +280,6 @@ public class List extends Fragment {
                         mAdapter2 = new TestAdapter();
                         recyclerView.setAdapter(mAdapter2);
                         test=1;
-                    }else if(test==1){
-                        recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
-                            @Override
-                            public int getSpanSize(int position){
-                                if(position==0) return 2;
-                                return 1;
-                            }
-                        });
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-                        mAdapter = new BoardRecyclerViewAdapter();
-                        recyclerView.setAdapter(mAdapter);
-                        test=0;
                     }
 
                 }
