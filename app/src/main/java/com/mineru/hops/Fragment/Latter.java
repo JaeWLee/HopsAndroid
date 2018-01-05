@@ -124,7 +124,7 @@ public class Latter extends Fragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_latter,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.latter_item,parent,false);
 
 
             return new CustomViewHolder(view);

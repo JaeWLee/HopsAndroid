@@ -13,14 +13,14 @@ import com.mineru.hops.R;
  * Created by mineru on 2017-12-29.
  */
 
-public class AddGroup2 extends AppCompatActivity {
+public class AddGroupLatter2 extends AppCompatActivity {
 
     private String[] str = new String[4];
     public Button btn_finish;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_group2);
+        setContentView(R.layout.add_group_latter2);
 
         Intent intent = getIntent();
 
@@ -34,7 +34,7 @@ public class AddGroup2 extends AppCompatActivity {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddGroup2.this, str[0]+"\n"+str[1]+"\n"+str[2]+"\n"+str[3], Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddGroupLatter2.this, str[0]+"\n"+str[1]+"\n"+str[2]+"\n"+str[3], Toast.LENGTH_SHORT).show();
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }

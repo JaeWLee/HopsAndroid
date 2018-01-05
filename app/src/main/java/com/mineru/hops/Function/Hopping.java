@@ -35,7 +35,7 @@ public class Hopping extends Activity implements SensorEventListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.hopping);
+        setContentView(R.layout.activity_hopping);
 
         m_senMng = (SensorManager)getSystemService(SENSOR_SERVICE);
         m_senAccelerometer = m_senMng.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);

@@ -1,4 +1,4 @@
-package com.mineru.hops;
+package com.mineru.hops.Function;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.mineru.hops.R;
+
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class CardTouchDialog extends Dialog {
@@ -26,7 +28,7 @@ public class CardTouchDialog extends Dialog {
         lpWindow.dimAmount = 0.8f;
         getWindow().setAttributes(lpWindow);
 
-        setContentView(R.layout.card_touch_dialog);
+        setContentView(R.layout.home_image_dialog);
 
         setLayout();
         outSide.setOnClickListener(new View.OnClickListener() {

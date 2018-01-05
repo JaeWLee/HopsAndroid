@@ -70,10 +70,10 @@
         <activity android:name=".UserManage.SignOutActivity" />
         <activity android:name=".MenuFragment" />
         <activity
-            android:name=".Function.AddGroup.AddGroup1"
+            android:name=".Function.AddGroup.AddGroupLatter1"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".Function.AddGroup.AddGroup2"
+            android:name=".Function.AddGroup.AddGroupLatter2"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".MainActivity"
@@ -95,7 +95,7 @@
                 <data android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".Card_Setting_Modify"></activity>
+        <activity android:name=".Function.Card_Setting_Modify"></activity>
         <activity android:name=".Function.AddGroup.Add_Firends_Group"/>
     </application>
 

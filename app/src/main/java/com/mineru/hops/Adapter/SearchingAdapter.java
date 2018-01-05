@@ -45,7 +45,7 @@ public class SearchingAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         if(convertView == null){
-            convertView = inflate.inflate(R.layout.list_card,null);
+            convertView = inflate.inflate(R.layout.list_item,null);
 
             viewHolder = new ViewHolder();
             viewHolder.label = (TextView) convertView.findViewById(R.id.group_title);

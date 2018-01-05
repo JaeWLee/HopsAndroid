@@ -1,4 +1,4 @@
-package com.mineru.hops;
+package com.mineru.hops.Function;
 
 import android.app.ActivityOptions;
 import android.app.Dialog;
@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.mineru.hops.MessageBoard;
+import com.mineru.hops.R;
 
 public class CardDialog extends Dialog {
     public RelativeLayout relativeLayout1;

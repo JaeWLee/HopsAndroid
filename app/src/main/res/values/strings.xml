@@ -2,6 +2,11 @@
     <string name="app_name">Hops</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="tutorial_1">다양한 스티커와 테마 디자인으로\n센스잇는 채팅을</string>
+    <string name="tutorial_2">HOPS친구들과 함께 음성통화,영상통화를 마음껏</string>
+    <string name="tutorial_3">다양한 표현이 가능한 스티커와 테마 기능</string>
+    <string name="tutorial_4">그룹으로 나누는 우리만의 이야기</string>
+    <string name="tutorial_5">모바일과 pc를 연동으로 더욱 편리한 채팅을</string>
     <string name="makecard_str1_2">Hops is leading the right not to be connected.\nWe prevent excessive linking of social media from phone number exposures by assigning virtual numbers.</string>
     <string name="makecard_str2_2">Please enter your organization and your position.</string>
     <string name="makecard_str2_3">Please upload a picture that represents you.</string>

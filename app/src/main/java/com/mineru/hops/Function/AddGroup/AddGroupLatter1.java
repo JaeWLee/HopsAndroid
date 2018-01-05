@@ -18,7 +18,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
  * Created by mineru on 2017-12-29.
  */
 
-public class AddGroup1 extends AppCompatActivity {
+public class AddGroupLatter1 extends AppCompatActivity {
     public EditText et_title;
     private Spinner sp_year;
     private Spinner sp_month;
@@ -30,7 +30,7 @@ public class AddGroup1 extends AppCompatActivity {
     private Button btn_next;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_group1);
+        setContentView(R.layout.add_group_latter1);
         et_title = (EditText) findViewById(R.id.et_title1);
         sp_year = (Spinner)findViewById(R.id.spinner_year);
         sp_month = (Spinner)findViewById(R.id.spinner_month);
@@ -43,10 +43,10 @@ public class AddGroup1 extends AppCompatActivity {
                 empty = et_title.getText().toString();
                 empty=empty.trim();
                 if(empty.getBytes().length<=0){
-                    Toast.makeText(AddGroup1.this, "입력이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddGroupLatter1.this, "입력이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();
                 }
                 else if (empty.getBytes().length>0){
-                    Intent intent = new Intent(AddGroup1.this,AddGroup2.class);
+                    Intent intent = new Intent(AddGroupLatter1.this,AddGroupLatter2.class);
                     intent.putExtra("title",et_title.getText().toString());
                     intent.putExtra("year",year);
                     intent.putExtra("month",month);

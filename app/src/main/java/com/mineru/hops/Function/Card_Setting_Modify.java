@@ -1,4 +1,4 @@
-package com.mineru.hops;
+package com.mineru.hops.Function;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mineru.hops.R;
 
 import org.w3c.dom.Text;
 
@@ -152,7 +153,7 @@ public class Card_Setting_Modify extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         LayoutInflater layoutInflater = this.getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.card_setting_dialog,null);
+        View view = layoutInflater.inflate(R.layout.card_setting_modify_dialog,null);
         final EditText editText = (EditText) view.findViewById(R.id.edit);
         if(type==0){
             editText.setHint("상태 메세지를 입력하세요");

@@ -1,21 +1,16 @@
 package com.mineru.hops.Fragment;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,14 +20,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mineru.hops.CardDialog;
-import com.mineru.hops.Function.AddGroup.AddGroup1;
+import com.mineru.hops.Function.AddGroup.AddGroupLatter1;
 import com.mineru.hops.Function.Code_Scanner;
 import com.mineru.hops.Function.Hopping2;
 import com.mineru.hops.UserManage.Model.Group_model;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.Searching_friends;
-import com.mineru.hops.MessageBoard;
 import com.mineru.hops.R;
 
 import java.util.ArrayList;
@@ -147,7 +140,7 @@ public class List extends Fragment {
                     startActivity(intent);
                 }
                 else if(view == fabGroup){
-                    Intent intent = new Intent(getActivity(),AddGroup1.class);
+                    Intent intent = new Intent(getActivity(),AddGroupLatter1.class);
                     startActivity(intent);
                 }
                 fam.close(true);
@@ -160,7 +153,7 @@ public class List extends Fragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_card, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
 
             return new CustomViewHolder(view);
         }
@@ -168,7 +161,7 @@ public class List extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ((CustomViewHolder)holder).group_title.setText(group_models.get(position).group_name);
-            ((CustomViewHolder)holder).group_number.setText(String.valueOf(group_models.get(position).m_num));
+            ((CustomViewHolder)holder).group_number.setText(String.valueOf(group_models.get(position).m_num)+"개의 Hops");
 
 
             ((CustomViewHolder)holder).list_layout.setOnClickListener(new View.OnClickListener(){

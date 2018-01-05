@@ -263,7 +263,7 @@ public class MessageBoard extends AppCompatActivity{
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item,parent,false);
 
 
             return new MessageViewHolder(view);

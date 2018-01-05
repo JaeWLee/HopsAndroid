@@ -1,25 +1,18 @@
 package com.mineru.hops.Function.AddGroup;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,16 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.mineru.hops.CardTouchDialog;
-import com.mineru.hops.Fragment.Home;
 import com.mineru.hops.R;
 import com.mineru.hops.UserManage.Model.Grid_Item_list;
-import com.mineru.hops.UserManage.Model.ImageDTO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by mineru on 2018-01-03.
@@ -66,7 +54,7 @@ public class Add_Firends_Group extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_firends_dialog);
+        setContentView(R.layout.add_firends_group_activity);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -133,7 +121,7 @@ public class Add_Firends_Group extends AppCompatActivity{
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_group_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_friends_group_item1, parent, false);
 
             return new CustomViewHolder(view);
         }

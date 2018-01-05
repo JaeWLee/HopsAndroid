@@ -2,13 +2,11 @@ package com.mineru.hops.Fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +29,9 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.mineru.hops.CardDialog;
-import com.mineru.hops.CardTouchDialog;
-import com.mineru.hops.Card_Setting_Modify;
+import com.mineru.hops.Function.CardDialog;
+import com.mineru.hops.Function.CardTouchDialog;
+import com.mineru.hops.Function.Card_Setting_Modify;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.MakeCard.MakeCard1;
 import com.mineru.hops.R;
@@ -157,7 +155,7 @@ public class Home extends Fragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_board, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_item, parent, false);
 
             return new CustomViewHolder(view);
         }
