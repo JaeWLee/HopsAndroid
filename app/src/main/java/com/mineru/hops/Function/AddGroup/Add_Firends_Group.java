@@ -48,7 +48,7 @@ public class Add_Firends_Group extends AppCompatActivity{
     private RecyclerGridViewAdapter gridAdapter1;
     private GridLayoutManager gridManager = new GridLayoutManager(getApplication(),2);
 
-    public List<String> str = new ArrayList<>();
+    public List<String> group_name = new ArrayList<>();
     public List<String> group_key= new ArrayList<>();
 
     @Override
@@ -72,7 +72,7 @@ public class Add_Firends_Group extends AppCompatActivity{
                 for(int i = 0;i<group_key.size();i++){
                     String tmp = group_key.get(i).toString();
                     Log.d(TAG,"test : "+tmp +" test2 :"+card_key);
-                    gridAdapter1.onStarClicked(database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group/").child(tmp));
+                    gridAdapter1.onStarClicked(database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group/friends").child(tmp));
                 }
                 finish();
             }
@@ -103,7 +103,7 @@ public class Add_Firends_Group extends AppCompatActivity{
                             Grid_Item_list imageDTO1 = snapshot.getValue(Grid_Item_list.class);
                             String str1 = snapshot.getKey();
                             grid_item_lists.add(imageDTO1);
-                            str.add(str1);
+                            group_name.add(str1);
                         }
                         gridAdapter1.notifyDataSetChanged();
                     }
@@ -131,7 +131,7 @@ public class Add_Firends_Group extends AppCompatActivity{
             Glide.with(holder.itemView.getContext())
                     .load(grid_item_lists.get(position).imageUrl)
                     .into(((CustomViewHolder)holder).imageView);
-            ((CustomViewHolder)holder).groupTitle.setText(str.get(position));
+            ((CustomViewHolder)holder).groupTitle.setText(group_name.get(position));
 
             ((CustomViewHolder)holder).groupNumber.setText(grid_item_lists.get(position).m_num+"개의 Hops");
 

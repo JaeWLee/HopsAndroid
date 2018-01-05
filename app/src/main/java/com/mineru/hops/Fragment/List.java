@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -24,7 +25,6 @@ import com.mineru.hops.Function.AddGroup.AddGroupLatter1;
 import com.mineru.hops.Function.Code_Scanner;
 import com.mineru.hops.Function.Hopping2;
 import com.mineru.hops.UserManage.Model.Group_model;
-import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.Searching_friends;
 import com.mineru.hops.R;
 
@@ -39,16 +39,21 @@ public class List extends Fragment {
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     public LinearLayout l_layout;
-    public int test=0;
     private RecyclerView recyclerView;
     private BoardRecyclerViewAdapter mAdapter;
+
+    private TestAdapter mAdapter2;
+
     private GridLayoutManager recyclerManager = new GridLayoutManager(getContext(),2);
 
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
 
-    private java.util.List<ImageDTO> imageDTOs = new ArrayList<>();
     private java.util.List<Group_model> group_models =new ArrayList<>();
+
+    public String str_title;
+    public int test=0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.list_fragment_layout,container,false);
@@ -70,6 +75,8 @@ public class List extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
         mAdapter = new BoardRecyclerViewAdapter();
+        mAdapter2 = new TestAdapter();
+
         recyclerView.setAdapter(mAdapter);
 
 
@@ -101,18 +108,32 @@ public class List extends Fragment {
             }
         });
 
+        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group/"+str_title)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        group_models.clear();
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            Group_model group_model = snapshot.getValue(Group_model.class);
+                            group_models.add(group_model);
+                        }
+                        mAdapter2.notifyDataSetChanged();
+
+                    }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group")
                 .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 group_models.clear();
-                //imageDTOs.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Group_model group_model = snapshot.getValue(Group_model.class);
                     group_models.add(group_model);
-                    //ImageDTO imageDTO = snapshot.getValue(ImageDTO.class);
-                    //imageDTOs.add(imageDTO);
                 }
                 mAdapter.notifyDataSetChanged();
 
@@ -127,6 +148,7 @@ public class List extends Fragment {
 
         return view;
     }
+
     private View.OnClickListener onButtonClick() {
         return new View.OnClickListener() {
             @Override
@@ -148,6 +170,77 @@ public class List extends Fragment {
         };
     }
 
+    public class TestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item2, parent, false);
+
+            return new TestAdapter.CustomViewHolder(view);
+        }
+        @Override
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            //((CustomViewHolder)holder).tv_name.setText(imageDTOs.get(position).inputName);
+            //((CustomViewHolder)holder).tv_description.setText(imageDTOs.get(position).inputDescription);
+            String tmp1 =group_models.get(position).friends.keySet().toString();
+            String tmp2 =group_models.get(position).friends.values().toString();
+            ((CustomViewHolder)holder).tv_name.setText(""+tmp1);
+            ((CustomViewHolder)holder).tv_description.setText(""+tmp2);
+            ((CustomViewHolder)holder).cardLayer.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    str_title = (String.valueOf(group_models.get(position).group_name));
+                    if(test==1){
+                        recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+                            @Override
+                            public int getSpanSize(int position){
+                                if(position==0) return 2;
+                                return 1;
+                            }
+                        });
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+                        mAdapter = new BoardRecyclerViewAdapter();
+                        recyclerView.setAdapter(mAdapter);
+                        test=0;
+                    }
+
+                }
+            });
+
+            Glide.with(holder.itemView.getContext())
+                    .load(group_models.get(position).imageUrl)
+                    .into(((CustomViewHolder)holder).item_imageView);
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return group_models.size();
+        }
+
+        private class CustomViewHolder extends RecyclerView.ViewHolder {
+            ImageView item_imageView;
+            RelativeLayout cardLayer;
+            GradientDrawable drawable;
+            TextView tv_name;
+            TextView tv_description;
+
+            public CustomViewHolder(View view) {
+                super(view);
+                tv_name = (TextView) view.findViewById(R.id.tv_name);
+                tv_description = (TextView) view.findViewById(R.id.tv_description);
+                cardLayer = (RelativeLayout) view.findViewById(R.id.cardLayer);
+                item_imageView = (ImageView) view.findViewById(R.id.item_imageView);
+                drawable = (GradientDrawable) view.getContext().getDrawable(R.drawable.round_view);
+                item_imageView.setBackground(drawable);
+                item_imageView.setClipToOutline(true);
+            }
+        }
+    }
+
+
+
      public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
@@ -159,10 +252,9 @@ public class List extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             ((CustomViewHolder)holder).group_title.setText(group_models.get(position).group_name);
             ((CustomViewHolder)holder).group_number.setText(String.valueOf(group_models.get(position).m_num)+"개의 Hops");
-
 
             ((CustomViewHolder)holder).list_layout.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -175,14 +267,18 @@ public class List extends Fragment {
                         startActivity(intent,activityOptions.toBundle());
 
                     }*/
+
+                    str_title = (String.valueOf(group_models.get(position).group_name));
+
                     if(test==0){
                         /*recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                         final BoardRecyclerViewAdapter boardRecyclerViewAdapter = new BoardRecyclerViewAdapter();
                         recyclerView.setAdapter(boardRecyclerViewAdapter);*/
+
                         recyclerView.setHasFixedSize(true);
                         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
-                        mAdapter = new BoardRecyclerViewAdapter();
-                        recyclerView.setAdapter(mAdapter);
+                        mAdapter2 = new TestAdapter();
+                        recyclerView.setAdapter(mAdapter2);
                         test=1;
                     }else if(test==1){
                         recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
@@ -241,6 +337,7 @@ public class List extends Fragment {
             }
         }
     }
+
 }
 
 

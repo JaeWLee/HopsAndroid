@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mineru.hops.MenuFragment;
+import com.mineru.hops.Test_framlayout;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.MakeCard.MakeCard1;
 import com.mineru.hops.MessageBoard;
@@ -85,7 +86,7 @@ public class Latter extends Fragment {
             @Override
             public void onClick(View view) {
                 if (view == fabWrite) {
-                    Intent intent = new Intent(getActivity(), MenuFragment.class);
+                    Intent intent = new Intent(getActivity(), Test_framlayout.class);
                     startActivity(intent);
                 }
                 fam.close(true);

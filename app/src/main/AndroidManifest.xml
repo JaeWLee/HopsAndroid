@@ -55,7 +55,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".Function.MakeCard.MakeCard4"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".Function.Code_Creator" />
         <activity
             android:name=".UserManage.LoginActivity"
@@ -77,8 +77,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize"></activity>
         <activity android:name=".Function.Hopping2">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -95,8 +94,9 @@
                 <data android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".Function.Card_Setting_Modify"></activity>
-        <activity android:name=".Function.AddGroup.Add_Firends_Group"/>
+        <activity android:name=".Function.Card_Setting_Modify" />
+        <activity android:name=".Function.AddGroup.Add_Firends_Group" />
+        <activity android:name=".Test_framlayout"></activity>
     </application>
 
 </manifest>
