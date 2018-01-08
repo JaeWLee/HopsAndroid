@@ -92,7 +92,7 @@ public class MakeCard4 extends AppCompatActivity {
                 btnNext.setEnabled(false);
                 Handler h = new Handler();
                 h.postDelayed(new splashhandler(),1000);
-                //upload(str[5]);
+                upload(str[5]);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 Intent intent = new Intent(MakeCard4.this,Add_Firends_Group.class);
                 startActivity(intent);

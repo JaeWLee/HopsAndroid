@@ -259,7 +259,7 @@ public class List extends Fragment {
                         mAdapter2 = new TestAdapter();
                         recyclerView.setAdapter(mAdapter2);
                         test = 1;
-                        database.getReference().child("Users/" + auth.getCurrentUser().getUid() + "/Group/" + str_title + "/friends")
+                        database.getReference().child("Users/" + auth.getCurrentUser().getUid() + "/Group/" + str_title + "/friends").orderByValue()
                                 .addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {

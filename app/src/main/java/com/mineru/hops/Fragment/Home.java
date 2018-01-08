@@ -60,6 +60,7 @@ public class Home extends Fragment {
     private FirebaseStorage storage;
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabAdd;
+    public int identy=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -246,6 +247,15 @@ public class Home extends Fragment {
             ((CustomViewHolder)holder).deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if((imageDTOs.get(position).cardpinCount)==1){
+                       database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Main").removeValue()
+                               .addOnSuccessListener(new OnSuccessListener<Void>() {
+                           @Override
+                           public void onSuccess(Void aVoid) {
+                               Toast.makeText(getContext(), "Main_delete", Toast.LENGTH_SHORT).show();
+                           }
+                       });
+                    }
                     delete_content(position);
                 }
             });
@@ -286,7 +296,6 @@ public class Home extends Fragment {
             });
         }
         private void delete_content(final int position){
-
             storage.getReference().child("Users/"+auth.getCurrentUser().getUid()).child(imageDTOs.get(position).imageName)
                     .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
