@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +50,14 @@ public class Latter extends Fragment {
     private static final String TAG ="LatterFragment";
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabWrite;
-
+    public ChatRecyclerViewAdapter mAdapter;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
-    private ArrayList<ImageDTO> imageDTOs = new ArrayList<>();
+    public ArrayList<ImageDTO> imageDTOs = new ArrayList<>();
+
+    private List<MessageBoard_Model> messaageboard = new ArrayList<>();
+    private String uid;
+    private ArrayList<String> destinationUsers = new ArrayList<>();
 
     @Nullable
     @Override
@@ -77,6 +82,52 @@ public class Latter extends Fragment {
                 }
             }
         });
+        mAdapter = new ChatRecyclerViewAdapter();
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase.getInstance().getReference().child("MessageBoards").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                messaageboard.clear();
+                for (DataSnapshot item :dataSnapshot.getChildren()){
+                    messaageboard.add(item.getValue(MessageBoard_Model.class));
+                }
+                destinationUsers.clear();
+                for(int i=0;i<messaageboard.size();i++)
+                    for(String user: messaageboard.get(i).users.keySet()){
+                        if(!user.equals(uid)){
+                            destinationUsers.add(user);
+                        }
+                    }
+                Log.d(TAG,"test size : "+destinationUsers.size());
+                imageDTOs.clear();
+                for(int t=0;t<destinationUsers.size();t++){
+                    Log.d(TAG,"test !!! " + destinationUsers.get(t));
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(destinationUsers.get(t)).child("Card")
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    ImageDTO imageDTO = dataSnapshot.getValue(ImageDTO.class);
+                                    imageDTOs.add(imageDTO);
+                                    Log.d(TAG,"test iamgeDTOs : "+imageDTOs.get(0));
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                }
+                mAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
 
         return view;
     }
@@ -96,33 +147,6 @@ public class Latter extends Fragment {
 
     class ChatRecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-        private List<MessageBoard_Model> messaageboard = new ArrayList<>();
-        private String uid;
-        private ArrayList<String> destinationUsers = new ArrayList<>();
-
-        public ChatRecyclerViewAdapter() {
-            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-            FirebaseDatabase.getInstance().getReference().child("MessageBoards").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    messaageboard.clear();
-                    for (DataSnapshot item :dataSnapshot.getChildren()){
-                        messaageboard.add(item.getValue(MessageBoard_Model.class));
-                    }
-                    notifyDataSetChanged();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-
-        }
-
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.latter_item,parent,false);
@@ -135,32 +159,17 @@ public class Latter extends Fragment {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
             final CustomViewHolder customViewHolder = (CustomViewHolder)holder;
-            String destinationUid = null;
+            Log.d(TAG,"test position :"+position);
+            Log.d(TAG,"test "+imageDTOs.get(position).inputName);
 
-            for(String user: messaageboard.get(position).users.keySet()){
-                if(!user.equals(uid)){
-                    destinationUid = user;
-                    destinationUsers.add(destinationUid);
-                }
-            }
+            Glide.with(customViewHolder.itemView.getContext())
+                    .load(imageDTOs.get(position).imageUrl)
+                    .apply(new RequestOptions().circleCrop())
+                    .into(customViewHolder.imageView);
 
-            FirebaseDatabase.getInstance().getReference().child("Users").child(destinationUid+"/Main").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ImageDTO imageDTO = dataSnapshot.getValue(ImageDTO.class);
-                    Glide.with(customViewHolder.itemView.getContext())
-                            .load(imageDTO.imageUrl)
-                            .apply(new RequestOptions().circleCrop())
-                            .into(customViewHolder.imageView);
+            customViewHolder.textView_title.setText((imageDTOs.get(position).inputName));
 
-                    customViewHolder.textView_title.setText(imageDTO.inputName);
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
             Map<String,MessageBoard_Model.Comment> commentMap = new TreeMap<>(Collections.reverseOrder());
             commentMap.putAll(messaageboard.get(position).comments);
             String lastMessageKey = (String) commentMap.keySet().toArray()[0];

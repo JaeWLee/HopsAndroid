@@ -14,6 +14,7 @@ public class Main_model {
     public String inputPosition;
     public String inputName;
     public String inputEmail;
+    public String uid;
     public String inputPhoneNumber;
     public String inputDescription;
 

@@ -68,7 +68,6 @@ public class Add_Firends_Group extends AppCompatActivity{
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG,"test : "+group_key);
                 for(int i = 0;i<group_key.size();i++){
                     String tmp = group_key.get(i).toString();
                     Log.d(TAG,"test : "+tmp +" test2 :"+username);

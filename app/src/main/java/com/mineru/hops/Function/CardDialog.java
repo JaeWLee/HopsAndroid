@@ -91,6 +91,7 @@ public class CardDialog extends Dialog {
                     activityOptions = ActivityOptions.makeCustomAnimation(getContext(),R.anim.fromright,R.anim.toleft);
                     getContext().startActivity(intent,activityOptions.toBundle());
                 }
+                cancel();
             }
         });
         mBtn2.setOnClickListener(new View.OnClickListener(){

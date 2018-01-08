@@ -146,9 +146,8 @@ public class MessageBoard extends AppCompatActivity{
                     FirebaseDatabase.getInstance().getReference().child("MessageBoards").child(MessageBoardUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            sendGcm();
                             eText.setText("");
-
+                            sendGcm();
                         }
                     });
 

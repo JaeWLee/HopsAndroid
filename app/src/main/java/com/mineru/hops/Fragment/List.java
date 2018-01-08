@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,18 +24,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mineru.hops.Function.AddGroup.AddGroupLatter1;
+import com.mineru.hops.Function.CardDialog;
+import com.mineru.hops.Function.CardTouchDialog;
 import com.mineru.hops.Function.Code_Scanner;
 import com.mineru.hops.Function.Hopping2;
 import com.mineru.hops.UserManage.Model.Group_model;
 import com.mineru.hops.Function.Searching_friends;
 import com.mineru.hops.R;
-import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.UserManage.Model.Main_model;
-import com.nostra13.universalimageloader.utils.L;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Mineru on 2017-09-08.
@@ -45,31 +44,31 @@ public class List extends Fragment {
 
     private FirebaseDatabase database;
     private FirebaseAuth auth;
-    public LinearLayout l_layout;
     private RecyclerView recyclerView;
     private BoardRecyclerViewAdapter mAdapter;
-
     private TestAdapter mAdapter2;
-
     private GridLayoutManager recyclerManager = new GridLayoutManager(getContext(),2);
-
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
 
+    private CardDialog mCardDialog;
+    public TextView tv_group_title;
+    public ImageView searching_btn;
+    public ImageView back_btn;
     public java.util.List<Group_model> group_models =new ArrayList<>();
     public java.util.List<String> list_key = new ArrayList<>();
     public java.util.List<String> list_value = new ArrayList<>();
     public java.util.List<Main_model> mainDTOs = new ArrayList<>();
     public String str_title;
-    public int test=0;
+    public int m_num;
+    public int test;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.list_fragment_layout,container,false);
-
+        test=0;
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
-
 
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
         recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
@@ -88,16 +87,41 @@ public class List extends Fragment {
 
         recyclerView.setAdapter(mAdapter);
 
+        searching_btn = (ImageView) view.findViewById(R.id.search_btn);
+        back_btn = (ImageView) view.findViewById(R.id.back_btn);
+        tv_group_title = (TextView) view.findViewById(R.id.tv_group_title);
+        tv_group_title.setText("");
 
-        l_layout = (LinearLayout) view.findViewById(R.id.l_layout);
-
-        l_layout.setOnClickListener(new View.OnClickListener() {
+        searching_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Searching_friends.class);
                 startActivity(intent);
             }
         });
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(test==1){
+                    back_btn.setImageResource(R.drawable.img_home);
+                    recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+                        @Override
+                        public int getSpanSize(int position){
+                            if(position==0) return 2;
+                            return 1;
+                        }
+                    });
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+                    mAdapter = new BoardRecyclerViewAdapter();
+                    recyclerView.setAdapter(mAdapter);
+                    test=0;
+                    tv_group_title.setText("");
+                }
+            }
+        });
+
         fabQr = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_qr);
         fabHopping = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_hopping);
         fabGroup = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_group);
@@ -116,26 +140,26 @@ public class List extends Fragment {
                 }
             }
         });
-
-
+        //FirebaseDatabase.getInstance().getReference("Users").keepSynced(true);
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group")
                 .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                group_models.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Group_model group_model = snapshot.getValue(Group_model.class);
-                    group_models.add(group_model);
-                }
-                mAdapter.notifyDataSetChanged();
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        group_models.clear();
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            Group_model group_model = snapshot.getValue(Group_model.class);
+                            group_models.add(group_model);
+                        }
+                        mAdapter.notifyDataSetChanged();
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
 
 
         return view;
@@ -172,28 +196,14 @@ public class List extends Fragment {
         }
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-            //((CustomViewHolder)holder).tv_name.setText(imageDTOs.get(position).inputName);
-            //((CustomViewHolder)holder).tv_description.setText(imageDTOs.get(position).inputDescription);
-            ((CustomViewHolder)holder).tv_name.setText(""+mainDTOs.get(position).inputName);
-            ((CustomViewHolder)holder).tv_description.setText(""+mainDTOs.get(position).inputDescription);
+            ((CustomViewHolder)holder).tv_name.setText(String.valueOf(mainDTOs.get(position).inputName));
+            ((CustomViewHolder)holder).tv_description.setText(String.valueOf(mainDTOs.get(position).inputDescription));
             ((CustomViewHolder)holder).cardLayer.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    if(test==1){
-                        recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
-                            @Override
-                            public int getSpanSize(int position){
-                                if(position==0) return 2;
-                                return 1;
-                            }
-                        });
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-                        mAdapter = new BoardRecyclerViewAdapter();
-                        recyclerView.setAdapter(mAdapter);
-                        test=0;
-                    }
-
+                    mCardDialog = new CardDialog(getActivity(),mainDTOs.get(position).imageUrl,mainDTOs.get(position).inputName, mainDTOs.get(position).inputCompany,
+                            mainDTOs.get(position).inputPosition,mainDTOs.get(position).inputDescription,mainDTOs.get(position).inputPhoneNumber,mainDTOs.get(position).uid);
+                    mCardDialog.show();
                 }
             });
 
@@ -230,7 +240,7 @@ public class List extends Fragment {
 
 
 
-     public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -248,17 +258,16 @@ public class List extends Fragment {
             ((CustomViewHolder)holder).list_layout.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-
+                    m_num = (group_models.get(position).m_num);
                     str_title = (String.valueOf(group_models.get(position).group_name));
-                    Log.d(TAG,"test : "+str_title);
                     if(test==0) {
-
-                        Log.d(TAG,"test 2");
                         recyclerView.setHasFixedSize(true);
                         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
                         mAdapter2 = new TestAdapter();
                         recyclerView.setAdapter(mAdapter2);
                         test = 1;
+                        back_btn.setImageResource(R.drawable.image_failed);
+                        tv_group_title.setText(String.valueOf(str_title)+"("+m_num+"명)");
                         database.getReference().child("Users/" + auth.getCurrentUser().getUid() + "/Group/" + str_title + "/friends").orderByValue()
                                 .addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -266,44 +275,34 @@ public class List extends Fragment {
                                         list_key.clear();
                                         list_value.clear();
                                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                            String str1 = snapshot.getKey();
-                                            String str2 = snapshot.getValue().toString();
+                                            String key = snapshot.getKey();
+                                            String val = snapshot.getValue().toString();
                                             int size = list_key.size();
-                                            int identy = 0;//확실?
-                                            int t=2;
-                                            int d=0;
-                                            Log.d(TAG,"test size : "+list_key.size());
+                                            int identy = 0,t1=2, t2=0;
                                             for(int i =0;i<size+1;i++){
-                                                Log.d(TAG,"test i :" +i);
                                                 if(list_key.size()==0){
-                                                    list_key.add(str1);
-                                                    list_value.add(str2);
+                                                    list_key.add(key);
+                                                    list_value.add(val);
                                                 }
                                                 else{
-                                                    while(d<size){
-                                                        Log.d(TAG,"test :" +str1+" : "+list_key.get(d));
-                                                        if(str1==list_key.get(d).toString()){
-                                                            t=3;
-                                                            Log.d(TAG,"test break");
-                                                            d+=1;
+                                                    while(t2<size){
+                                                        if(key==list_key.get(t2).toString()){
+                                                            t1=3;
+                                                            t2+=1;
                                                             break;
                                                         }
-                                                        if (str1!=list_key.get(d).toString()){
+                                                        if (key!=list_key.get(t2).toString()){
                                                             identy+=1;
-                                                            Log.d(TAG,"test why?"+t);
-                                                            d+=1;
-                                                            Log.d(TAG,"test d : "+d);
-                                                            if(d==size&&identy%2==1&&t==2){
-                                                                list_key.add(str1);
-                                                                Log.d(TAG,"test 0 : "+str1+" : "+list_key.get(1));
-                                                                list_value.add(str2);
+                                                            t2+=1;
+                                                            if(t2==size&&identy%2==1&&t1==2){
+                                                                list_key.add(key);
+                                                                list_value.add(val);
                                                             }
                                                             break;
                                                         }
                                                     }
                                                 }
                                             }
-                                            Log.d(TAG, "test 1");
                                         }
                                         mainDTOs.clear();
                                         for(int i=0;i<list_key.size();i++) {
@@ -372,5 +371,3 @@ public class List extends Fragment {
     }
 
 }
-
-

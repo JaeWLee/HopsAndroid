@@ -60,7 +60,6 @@ public class Home extends Fragment {
     private FirebaseStorage storage;
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabAdd;
-    public int identy=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -239,6 +238,7 @@ public class Home extends Fragment {
                 stringObjectMap.put("inputPhoneNumber",imageDTOs.get(position).inputPhoneNumber);
                 stringObjectMap.put("inputPosition",imageDTOs.get(position).inputPosition);
                 stringObjectMap.put("inputEmail",imageDTOs.get(position).inputEmail);
+                stringObjectMap.put("uid",imageDTOs.get(position).uid);
                 database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Main/Main").updateChildren(stringObjectMap);
 
             }else {
