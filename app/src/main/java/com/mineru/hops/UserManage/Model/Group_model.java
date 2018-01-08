@@ -8,7 +8,7 @@ import java.util.Map;
  */
 
 public class Group_model {
-    public Map<String,String> friends = new HashMap<String, String>();
+    public Map<String,String> friends = new HashMap<>();
     public int m_num;
     public String group_name;
     public String imageUrl;

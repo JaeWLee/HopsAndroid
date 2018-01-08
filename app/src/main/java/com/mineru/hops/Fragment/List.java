@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,14 @@ import com.mineru.hops.Function.Hopping2;
 import com.mineru.hops.UserManage.Model.Group_model;
 import com.mineru.hops.Function.Searching_friends;
 import com.mineru.hops.R;
+import com.mineru.hops.UserManage.Model.ImageDTO;
+import com.mineru.hops.UserManage.Model.Main_model;
+import com.nostra13.universalimageloader.utils.L;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Mineru on 2017-09-08.
  */
@@ -49,8 +56,10 @@ public class List extends Fragment {
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
 
-    private java.util.List<Group_model> group_models =new ArrayList<>();
-
+    public java.util.List<Group_model> group_models =new ArrayList<>();
+    public java.util.List<String> list_key = new ArrayList<>();
+    public java.util.List<String> list_value = new ArrayList<>();
+    public java.util.List<Main_model> mainDTOs = new ArrayList<>();
     public String str_title;
     public int test=0;
 
@@ -108,23 +117,6 @@ public class List extends Fragment {
             }
         });
 
-        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group/"+str_title)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        group_models.clear();
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            Group_model group_model = snapshot.getValue(Group_model.class);
-                            group_models.add(group_model);
-                        }
-                        mAdapter2.notifyDataSetChanged();
-
-                    }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group")
                 .addValueEventListener(new ValueEventListener() {
@@ -182,14 +174,11 @@ public class List extends Fragment {
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             //((CustomViewHolder)holder).tv_name.setText(imageDTOs.get(position).inputName);
             //((CustomViewHolder)holder).tv_description.setText(imageDTOs.get(position).inputDescription);
-            String tmp1 =group_models.get(position).friends.keySet().toString();
-            String tmp2 =group_models.get(position).friends.values().toString();
-            ((CustomViewHolder)holder).tv_name.setText(""+tmp1);
-            ((CustomViewHolder)holder).tv_description.setText(""+tmp2);
+            ((CustomViewHolder)holder).tv_name.setText(""+mainDTOs.get(position).inputName);
+            ((CustomViewHolder)holder).tv_description.setText(""+mainDTOs.get(position).inputDescription);
             ((CustomViewHolder)holder).cardLayer.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    str_title = (String.valueOf(group_models.get(position).group_name));
                     if(test==1){
                         recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
                             @Override
@@ -209,14 +198,14 @@ public class List extends Fragment {
             });
 
             Glide.with(holder.itemView.getContext())
-                    .load(group_models.get(position).imageUrl)
+                    .load(mainDTOs.get(position).imageUrl)
                     .into(((CustomViewHolder)holder).item_imageView);
 
         }
 
         @Override
         public int getItemCount() {
-            return group_models.size();
+            return mainDTOs.size();
         }
 
         private class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -259,41 +248,98 @@ public class List extends Fragment {
             ((CustomViewHolder)holder).list_layout.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    /*Intent intent = new Intent(view.getContext(), MessageBoard.class);
-                    intent.putExtra("group_name",group_models.get(position).group_name);
-                    ActivityOptions activityOptions = null;
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
-                        activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright,R.anim.toleft);
-                        startActivity(intent,activityOptions.toBundle());
-
-                    }*/
 
                     str_title = (String.valueOf(group_models.get(position).group_name));
+                    Log.d(TAG,"test : "+str_title);
+                    if(test==0) {
 
-                    if(test==0){
-                        /*recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        final BoardRecyclerViewAdapter boardRecyclerViewAdapter = new BoardRecyclerViewAdapter();
-                        recyclerView.setAdapter(boardRecyclerViewAdapter);*/
-
+                        Log.d(TAG,"test 2");
                         recyclerView.setHasFixedSize(true);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
                         mAdapter2 = new TestAdapter();
                         recyclerView.setAdapter(mAdapter2);
-                        test=1;
+                        test = 1;
+                        database.getReference().child("Users/" + auth.getCurrentUser().getUid() + "/Group/" + str_title + "/friends")
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        list_key.clear();
+                                        list_value.clear();
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            String str1 = snapshot.getKey();
+                                            String str2 = snapshot.getValue().toString();
+                                            int size = list_key.size();
+                                            int identy = 0;//확실?
+                                            int t=2;
+                                            int d=0;
+                                            Log.d(TAG,"test size : "+list_key.size());
+                                            for(int i =0;i<size+1;i++){
+                                                Log.d(TAG,"test i :" +i);
+                                                if(list_key.size()==0){
+                                                    list_key.add(str1);
+                                                    list_value.add(str2);
+                                                }
+                                                else{
+                                                    while(d<size){
+                                                        Log.d(TAG,"test :" +str1+" : "+list_key.get(d));
+                                                        if(str1==list_key.get(d).toString()){
+                                                            t=3;
+                                                            Log.d(TAG,"test break");
+                                                            d+=1;
+                                                            break;
+                                                        }
+                                                        if (str1!=list_key.get(d).toString()){
+                                                            identy+=1;
+                                                            Log.d(TAG,"test why?"+t);
+                                                            d+=1;
+                                                            Log.d(TAG,"test d : "+d);
+                                                            if(d==size&&identy%2==1&&t==2){
+                                                                list_key.add(str1);
+                                                                Log.d(TAG,"test 0 : "+str1+" : "+list_key.get(1));
+                                                                list_value.add(str2);
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            Log.d(TAG, "test 1");
+                                        }
+                                        mainDTOs.clear();
+                                        for(int i=0;i<list_key.size();i++) {
+                                            database.getReference().child("Users/" + list_key.get(i)+"/Main/")
+                                                    .addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                                Main_model mainDTO = snapshot.getValue(Main_model.class);
+                                                                mainDTOs.add(mainDTO);
+                                                            }
+                                                            mAdapter2.notifyDataSetChanged();
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+                                        }
+
+                                        mAdapter2.notifyDataSetChanged();
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
                     }
 
                 }
             });
-
-            /*((CustomViewHolder)holder).list_layout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v){
-                    mCardDialog = new CardDialog(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
-                            imageDTOs.get(position).inputPosition,imageDTOs.get(position).inputDescription,imageDTOs.get(position).inputPhoneNumber,imageDTOs.get(position).uid);
-                    mCardDialog.show();
-                    return false;
-                }
-            });*/
             Glide.with(holder.itemView.getContext())
                     .load(group_models.get(position).imageUrl)
                     .into(((CustomViewHolder)holder).list_image);

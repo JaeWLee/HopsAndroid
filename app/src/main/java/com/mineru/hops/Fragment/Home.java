@@ -238,7 +238,7 @@ public class Home extends Fragment {
                 stringObjectMap.put("inputPhoneNumber",imageDTOs.get(position).inputPhoneNumber);
                 stringObjectMap.put("inputPosition",imageDTOs.get(position).inputPosition);
                 stringObjectMap.put("inputEmail",imageDTOs.get(position).inputEmail);
-                database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Main").updateChildren(stringObjectMap);
+                database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Main/Main").updateChildren(stringObjectMap);
 
             }else {
                 ((CustomViewHolder)holder).pinButton.setImageResource(R.drawable.icon_cardpin_off);
