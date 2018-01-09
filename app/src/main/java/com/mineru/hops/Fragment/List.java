@@ -21,7 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mineru.hops.Function.AddGroup.AddGroupLatter1;
 import com.mineru.hops.Function.CardDialog_List;
 import com.mineru.hops.Function.Code_Scanner;
 import com.mineru.hops.Function.Hopping2;

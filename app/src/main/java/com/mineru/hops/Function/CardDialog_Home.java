@@ -1,11 +1,7 @@
 package com.mineru.hops.Function;
 
-import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +14,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.mineru.hops.MessageBoard;
 import com.mineru.hops.R;
 
 public class CardDialog_Home extends Dialog {

@@ -3,7 +3,6 @@ package com.mineru.hops.Function;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,10 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.mineru.hops.Fragment.Home;
 import com.mineru.hops.R;
 
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
