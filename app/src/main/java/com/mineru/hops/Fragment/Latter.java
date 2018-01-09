@@ -24,14 +24,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mineru.hops.MenuFragment;
 import com.mineru.hops.Test_framlayout;
 import com.mineru.hops.UserManage.Model.ImageDTO;
-import com.mineru.hops.Function.MakeCard.MakeCard1;
 import com.mineru.hops.MessageBoard;
 import com.mineru.hops.R;
 import com.mineru.hops.UserManage.Model.MessageBoard_Model;
-import com.mineru.hops.UserManage.Model.User;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;

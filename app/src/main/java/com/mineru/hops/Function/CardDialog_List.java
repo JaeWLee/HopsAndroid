@@ -4,7 +4,6 @@ import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.mineru.hops.MessageBoard;
 import com.mineru.hops.R;
 
-public class CardDialog extends Dialog {
+public class CardDialog_List extends Dialog {
     public RelativeLayout relativeLayout1;
     public RelativeLayout relativeLayout2;
     private ImageView mImageView;
@@ -102,18 +101,19 @@ public class CardDialog extends Dialog {
                 Intent it = new Intent(Intent.ACTION_SENDTO, uri);
                 it.putExtra("sms_body", "Hops Message Test");
                 getContext().startActivity(it);
+                cancel();
             }
         });
         mBtn1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 getContext().startActivity(new Intent("android.intent.action.DIAL", Uri.parse("tel:"+mPhoneNumber)));
-
+                cancel();
             }
         });
     }
 
-    public CardDialog(Context context, String imageUrl, String inputName, String inputCompany, String inputPosition, String inputDescription, String inputPhoneNumber, String uid) {
+    public CardDialog_List(Context context, String imageUrl, String inputName, String inputCompany, String inputPosition, String inputDescription, String inputPhoneNumber, String uid) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mUid = uid;
         this.mDescription = inputDescription;

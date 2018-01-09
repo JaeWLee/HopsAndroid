@@ -5,32 +5,32 @@ package com.mineru.hops.UserManage.Model;
  */
 
 public class User {
-    private String user_id;
+    private String uid;
     private String email;
-    private String username;
+    private String user_name;
     private int card_num;
 
     public User(String user_id,String email,String username,int card_num){
-        this.user_id = user_id;
+        this.uid = user_id;
         this.email=email;
-        this.username=username;
+        this.user_name=username;
         this.card_num=card_num;
     }
     public User(){
-    }
 
-    public int getCard_num(){
+    }
+    public int getCardNum(){
         return card_num;
     }
-    public void setCar_num(){
+    public void setCardNum(int card_num){
         this.card_num=card_num;
     }
 
-    public String getUser_id(){
-        return user_id;
+    public String getUid(){
+        return uid;
     }
-    public void setUser_id(String user_id){
-        this.user_id=user_id;
+    public void setUid(String user_id){
+        this.uid=user_id;
     }
 
     public String getEmail(){
@@ -41,18 +41,18 @@ public class User {
     }
 
     public String getUsername(){
-        return username;
+        return user_name;
     }
     public void setUsername(String username){
-        this.username=username;
+        this.user_name=username;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "my_id='" + user_id + '\'' +
+                "uid='" + uid + '\'' +
                 ", verify_email='" + email + '\'' +
-                ", username='" + username + '\'' +
+                ", username='" + user_name + '\'' +
                 ", card_num='"+ card_num +'\''+
                 '}';
 

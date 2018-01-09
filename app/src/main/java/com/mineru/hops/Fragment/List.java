@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,14 +22,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mineru.hops.Function.AddGroup.AddGroupLatter1;
-import com.mineru.hops.Function.CardDialog;
-import com.mineru.hops.Function.CardTouchDialog;
+import com.mineru.hops.Function.CardDialog_List;
 import com.mineru.hops.Function.Code_Scanner;
 import com.mineru.hops.Function.Hopping2;
 import com.mineru.hops.UserManage.Model.Group_model;
 import com.mineru.hops.Function.Searching_friends;
 import com.mineru.hops.R;
-import com.mineru.hops.UserManage.Model.Main_model;
+import com.mineru.hops.UserManage.Model.ImageDTO;
 
 import java.util.ArrayList;
 
@@ -51,14 +48,14 @@ public class List extends Fragment {
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
 
-    private CardDialog mCardDialog;
+    private CardDialog_List mCardDialog;
     public TextView tv_group_title;
     public ImageView searching_btn;
     public ImageView back_btn;
     public java.util.List<Group_model> group_models =new ArrayList<>();
     public java.util.List<String> list_key = new ArrayList<>();
     public java.util.List<String> list_value = new ArrayList<>();
-    public java.util.List<Main_model> mainDTOs = new ArrayList<>();
+    public java.util.List<ImageDTO> imageDTOs = new ArrayList<>();
     public String str_title;
     public int m_num;
     public int test;
@@ -196,26 +193,26 @@ public class List extends Fragment {
         }
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-            ((CustomViewHolder)holder).tv_name.setText(String.valueOf(mainDTOs.get(position).inputName));
-            ((CustomViewHolder)holder).tv_description.setText(String.valueOf(mainDTOs.get(position).inputDescription));
+            ((CustomViewHolder)holder).tv_name.setText(String.valueOf(imageDTOs.get(position).inputName));
+            ((CustomViewHolder)holder).tv_description.setText(String.valueOf(imageDTOs.get(position).inputDescription));
             ((CustomViewHolder)holder).cardLayer.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    mCardDialog = new CardDialog(getActivity(),mainDTOs.get(position).imageUrl,mainDTOs.get(position).inputName, mainDTOs.get(position).inputCompany,
-                            mainDTOs.get(position).inputPosition,mainDTOs.get(position).inputDescription,mainDTOs.get(position).inputPhoneNumber,mainDTOs.get(position).uid);
+                    mCardDialog = new CardDialog_List(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
+                            imageDTOs.get(position).inputPosition,imageDTOs.get(position).inputDescription,imageDTOs.get(position).inputPhoneNumber,imageDTOs.get(position).uid);
                     mCardDialog.show();
                 }
             });
 
             Glide.with(holder.itemView.getContext())
-                    .load(mainDTOs.get(position).imageUrl)
+                    .load(imageDTOs.get(position).imageUrl)
                     .into(((CustomViewHolder)holder).item_imageView);
 
         }
 
         @Override
         public int getItemCount() {
-            return mainDTOs.size();
+            return imageDTOs.size();
         }
 
         private class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -304,15 +301,15 @@ public class List extends Fragment {
                                                 }
                                             }
                                         }
-                                        mainDTOs.clear();
+                                        imageDTOs.clear();
                                         for(int i=0;i<list_key.size();i++) {
-                                            database.getReference().child("Users/" + list_key.get(i)+"/Main/")
+                                            database.getReference().child("Users/" + list_key.get(i)+"/Card").orderByKey().equalTo(list_value.get(i))
                                                     .addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                                                Main_model mainDTO = snapshot.getValue(Main_model.class);
-                                                                mainDTOs.add(mainDTO);
+                                                                ImageDTO imageDTO = snapshot.getValue(ImageDTO.class);
+                                                                imageDTOs.add(imageDTO);
                                                             }
                                                             mAdapter2.notifyDataSetChanged();
                                                         }

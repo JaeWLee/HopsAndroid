@@ -29,7 +29,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.mineru.hops.Function.CardDialog;
+import com.mineru.hops.Function.CardDialog_Home;
 import com.mineru.hops.Function.CardTouchDialog;
 import com.mineru.hops.Function.Card_Setting_Modify;
 import com.mineru.hops.UserManage.Model.ImageDTO;
@@ -48,7 +48,7 @@ import java.util.Map;
 
 public class Home extends Fragment {
     private static final String TAG ="HomeFragment";
-    private CardDialog mCardDialog;
+    private CardDialog_Home mCardDialog;
 
     private CardTouchDialog mCardTouchDialog;
     private RecyclerView recyclerView;
@@ -188,7 +188,7 @@ public class Home extends Fragment {
             ((CustomViewHolder) holder).btnFront.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
-                    mCardDialog = new CardDialog(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
+                    mCardDialog = new CardDialog_Home(getActivity(),imageDTOs.get(position).imageUrl,imageDTOs.get(position).inputName, imageDTOs.get(position).inputCompany,
                             imageDTOs.get(position).inputPosition,imageDTOs.get(position).inputDescription,imageDTOs.get(position).inputPhoneNumber,imageDTOs.get(position).uid);
                     mCardDialog.show();
                 }

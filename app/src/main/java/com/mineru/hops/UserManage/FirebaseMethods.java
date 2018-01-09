@@ -105,9 +105,12 @@ public class FirebaseMethods {
 
     public void addNewUSer(String email, String username)
     {
+        String group_name="전체";
+        String imageUrl="https://firebasestorage.googleapis.com/v0/b/hops2lattop.appspot.com/o/Group%2Fa.png?alt=media&token=f3a2f8cb-d8e2-4f1e-97dc-2e07b64ebe66";
+
         UserAccountSettings settings = new UserAccountSettings(username,email);
         User user = new User(userID,email,StringMainpulation.condenseUsername(username),0);
-        DefaultUser d_user = new DefaultUser(userID);
+        DefaultUser d_user = new DefaultUser(group_name,0,imageUrl);
 
         myRef.child(mContext.getString(R.string.dbname_users))
                 .child(userID)
@@ -120,7 +123,7 @@ public class FirebaseMethods {
         myRef.child(mContext.getString(R.string.dbname_users))
                 .child(userID)
                 .child("Group")
-                .child("All")
+                .child("전체")
                 .setValue(d_user);
     }
 

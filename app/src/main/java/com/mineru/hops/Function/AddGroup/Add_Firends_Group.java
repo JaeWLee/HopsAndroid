@@ -41,7 +41,7 @@ public class Add_Firends_Group extends AppCompatActivity{
     public FirebaseDatabase database;
     public FirebaseAuth auth;
     public String uid;
-    public String username;
+    public String card_key;
     private List<Grid_Item_list> grid_item_lists= new ArrayList<>();
 
     private RecyclerView recyclerView1;
@@ -59,7 +59,7 @@ public class Add_Firends_Group extends AppCompatActivity{
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         uid="3qULhidczVa1g31csTY4VaaiVRl2";
-        username="임근석";
+        card_key="-L";
         //Intent intent = getIntent();
         //uid = intent.getExtras().getString("uid");
         //username = intent.getExtras().getString("inputName");
@@ -70,7 +70,7 @@ public class Add_Firends_Group extends AppCompatActivity{
             public void onClick(View view) {
                 for(int i = 0;i<group_key.size();i++){
                     String tmp = group_key.get(i).toString();
-                    Log.d(TAG,"test : "+tmp +" test2 :"+username);
+                    Log.d(TAG,"test : "+tmp +" test2 :"+card_key);
                     gridAdapter1.onStarClicked(database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group/friends").child(tmp));
                 }
                 finish();
@@ -165,7 +165,7 @@ public class Add_Firends_Group extends AppCompatActivity{
                     if (test.friends.containsKey(uid)!=true) {
                         // Star the post and add self to stars
                         test.m_num = test.m_num + 1;
-                        test.friends.put(uid, username);//uid는 상대방 id값 ,card_key는 교환한 카드key값
+                        test.friends.put(uid, card_key);//uid는 상대방 id값 ,card_key는 교환한 카드key값
                     }
                     else{
                         Log.d(TAG,group_key+"에 이미 등록 되었습니다.");
