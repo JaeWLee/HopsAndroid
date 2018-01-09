@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mineru.hops.Function.AddGroup.AddGroupLatter1;
 import com.mineru.hops.Test_framlayout;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.MessageBoard;
@@ -46,7 +47,7 @@ import java.util.TreeMap;
 public class Latter extends Fragment {
     private static final String TAG ="LatterFragment";
     private FloatingActionMenu fam;
-    private com.github.clans.fab.FloatingActionButton fabWrite;
+    private com.github.clans.fab.FloatingActionButton fabWrite,fabGroup;
     public ChatRecyclerViewAdapter mAdapter;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
@@ -66,9 +67,11 @@ public class Latter extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
 
         fabWrite = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_write);
+        fabGroup = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_group);
         fam = (FloatingActionMenu) view.findViewById(R.id.fab_plus_latter);
 
         fabWrite.setOnClickListener(onButtonClick());
+        fabGroup.setOnClickListener(onButtonClick());
         fam.setClosedOnTouchOutside(true);
 
         fam.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +139,9 @@ public class Latter extends Fragment {
                 if (view == fabWrite) {
                     Intent intent = new Intent(getActivity(), Test_framlayout.class);
                     startActivity(intent);
+                } else if(view == fabGroup){
+                    Intent intent = new Intent(getActivity(),AddGroupLatter1.class);
+                    startActivity(intent);
                 }
                 fam.close(true);
             }
@@ -156,8 +162,6 @@ public class Latter extends Fragment {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
             final CustomViewHolder customViewHolder = (CustomViewHolder)holder;
-            Log.d(TAG,"test position :"+position);
-            Log.d(TAG,"test "+imageDTOs.get(position).inputName);
 
             Glide.with(customViewHolder.itemView.getContext())
                     .load(imageDTOs.get(position).imageUrl)

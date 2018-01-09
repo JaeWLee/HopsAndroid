@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class Home extends Fragment {
 
     private CardTouchDialog mCardTouchDialog;
     private RecyclerView recyclerView;
-    private long card_num;
+    private long card_num=3L;
     private List<ImageDTO> imageDTOs = new ArrayList<>();
     private List<String> uidLists = new ArrayList<>();
     private FirebaseDatabase database;
@@ -76,7 +77,7 @@ public class Home extends Fragment {
 
 
         database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
@@ -135,7 +136,7 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
                 if (view == fabAdd) {
-
+                    Toast.makeText(getContext(), "test : "+card_num, Toast.LENGTH_SHORT).show();
                     if(card_num>=3L){
                         Toast.makeText(getContext(), "더 이상 카드를 생성할 수 없습니다.", Toast.LENGTH_SHORT).show();
                         fam.close(true);
@@ -161,7 +162,9 @@ public class Home extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+
+
             ((CustomViewHolder)holder).textView.setText(imageDTOs.get(position).inputName);
             ((CustomViewHolder)holder).textView2.setText(imageDTOs.get(position).inputCompany);
             ((CustomViewHolder)holder).textView3.setText(imageDTOs.get(position).inputPosition);
@@ -178,6 +181,8 @@ public class Home extends Fragment {
                     intent.putExtra("inputPosition",imageDTOs.get(position).inputPosition);
                     intent.putExtra("inputPhoneNumber",imageDTOs.get(position).inputPhoneNumber);
                     intent.putExtra("inputEmail",imageDTOs.get(position).inputEmail);
+                    intent.putExtra("imageName",imageDTOs.get(position).imageName);
+                    intent.putExtra("card_num",card_num);
                     ActivityOptions activityOptions = null;
                     activityOptions = ActivityOptions.makeCustomAnimation(getContext(),R.anim.fromright,R.anim.toleft);
                     startActivity(intent,activityOptions.toBundle());
@@ -224,41 +229,86 @@ public class Home extends Fragment {
             ((CustomViewHolder)holder).pinButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onStarClicked(database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card").child(uidLists.get(position)));
+                    database.getReference().child("Users/"+auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                                if(snapshot.getKey().equals("main_card")&&snapshot.getValue().equals(false)) {
+                                    onStarClicked(database.getReference().child("Users/" + auth.getCurrentUser().getUid() + "/" + "Card").child(uidLists.get(position)));
+                                }
+                                Log.d(TAG, "test : " + snapshot.getValue() + " test 2 : " + imageDTOs.get(position).card_key);
+                                if(snapshot.getKey().equals("main_card")&&snapshot.getValue().equals(String.valueOf(imageDTOs.get(position).card_key))){
+                                    Log.d(TAG, "test : " + snapshot.getKey() + " test 2 : " + imageDTOs.get(position).card_key);
+                                    onStarClicked(database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card").child(uidLists.get(position)));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             });
 
             if (imageDTOs.get(position).cardpins.containsKey(auth.getCurrentUser().getUid())) {
-                ((CustomViewHolder)holder).pinButton.setImageResource(R.drawable.icon_cardpin_on);
-                Map<String,Object> stringObjectMap = new HashMap<>();
-                stringObjectMap.put("imageUrl",imageDTOs.get(position).imageUrl);
-                stringObjectMap.put("inputCompany",imageDTOs.get(position).inputCompany);
-                stringObjectMap.put("inputDescription",imageDTOs.get(position).inputDescription);
-                stringObjectMap.put("inputName",imageDTOs.get(position).inputName);
-                stringObjectMap.put("inputPhoneNumber",imageDTOs.get(position).inputPhoneNumber);
-                stringObjectMap.put("inputPosition",imageDTOs.get(position).inputPosition);
-                stringObjectMap.put("inputEmail",imageDTOs.get(position).inputEmail);
-                stringObjectMap.put("uid",imageDTOs.get(position).uid);
-                database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Main/Main").updateChildren(stringObjectMap);
+                ((CustomViewHolder)holder).pinButton.setImageResource(R.drawable.card_pin);
 
-            }else {
+                database.getReference().child("Users").child(auth.getCurrentUser().getUid())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                                    if(snapshot.getKey().equals("main_card")&&snapshot.getValue().equals(false)) {
+                                        Map<String, Object> stringObjectMap = new HashMap<>();
+                                        stringObjectMap.put("imageUrl", imageDTOs.get(position).imageUrl);
+                                        stringObjectMap.put("inputCompany", imageDTOs.get(position).inputCompany);
+                                        stringObjectMap.put("inputDescription", imageDTOs.get(position).inputDescription);
+                                        stringObjectMap.put("inputName", imageDTOs.get(position).inputName);
+                                        stringObjectMap.put("inputPhoneNumber", imageDTOs.get(position).inputPhoneNumber);
+                                        stringObjectMap.put("inputPosition", imageDTOs.get(position).inputPosition);
+                                        stringObjectMap.put("inputEmail", imageDTOs.get(position).inputEmail);
+                                        stringObjectMap.put("uid", imageDTOs.get(position).uid);
+                                        database.getReference().child("Users/" + auth.getCurrentUser().getUid() + "/Main/Main").updateChildren(stringObjectMap);
+                                        Map<String,Object> main_card = new HashMap<>();
+                                        main_card.put("main_card",imageDTOs.get(position).card_key);
+                                        database.getReference().child("Users/"+auth.getCurrentUser().getUid()).updateChildren(main_card);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+            }else{
                 ((CustomViewHolder)holder).pinButton.setImageResource(R.drawable.icon_cardpin_off);
+                database.getReference().child("Users").child(auth.getCurrentUser().getUid())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                                    if(snapshot.getKey().equals("main_card")&&snapshot.getValue().equals(imageDTOs.get(position).card_key)){
+                                        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Main/Main").removeValue();
+                                        Map<String,Object> test = new HashMap<>();
+                                        test.put("main_card",false);
+                                        database.getReference().child("Users").child(auth.getCurrentUser().getUid()).updateChildren(test);
+
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
             }
-            ((CustomViewHolder)holder).deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if((imageDTOs.get(position).cardpinCount)==1){
-                       database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Main").removeValue()
-                               .addOnSuccessListener(new OnSuccessListener<Void>() {
-                           @Override
-                           public void onSuccess(Void aVoid) {
-                               Toast.makeText(getContext(), "Main_delete", Toast.LENGTH_SHORT).show();
-                           }
-                       });
-                    }
-                    delete_content(position);
-                }
-            });
+
         }
         @Override
         public int getItemCount() {
@@ -266,6 +316,7 @@ public class Home extends Fragment {
         }
 
         private void onStarClicked(DatabaseReference postRef) {
+
             postRef.runTransaction(new Transaction.Handler() {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
@@ -278,6 +329,7 @@ public class Home extends Fragment {
                         // Unstar the post and remove self from stars
                         imageDTO.cardpinCount = imageDTO.cardpinCount - 1;
                         imageDTO.cardpins.remove(auth.getCurrentUser().getUid());
+
                     } else {
                         // Star the post and add self to stars
                         imageDTO.cardpinCount = imageDTO.cardpinCount + 1;
@@ -295,65 +347,11 @@ public class Home extends Fragment {
                 }
             });
         }
-        private void delete_content(final int position){
-            storage.getReference().child("Users/"+auth.getCurrentUser().getUid()).child(imageDTOs.get(position).imageName)
-                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
 
-                    database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card/")
-                            .child(uidLists.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                                                if(snapshot.getKey().equals("card_num")){
-                                                    card_num= (long) snapshot.getValue();
-                                                }
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                            if(card_num==3L){
-                                card_num=2L;
-                            } else if(card_num==2L){
-                                card_num=1L;
-                            }else if(card_num==1L){
-                                card_num=0;
-                            }
-                            Map<String,Object> card= new HashMap<String,Object>();
-                            card.put("card_num",card_num);
-                            database.getReference().child("Users/" + auth.getCurrentUser().getUid()).updateChildren(card);
-                            Toast.makeText(getActivity(), "Delete Success", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Delete Fail", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-        }
 
         private class CustomViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
             ImageView pinButton;
-            ImageView deleteButton;
             TextView textView;
             TextView textView2;
             TextView textView3;
@@ -375,7 +373,6 @@ public class Home extends Fragment {
                 textView2 = (TextView) view.findViewById(R.id.item_textView2);
                 textView3 = (TextView) view.findViewById(R.id.item_textView3);
                 pinButton = (ImageView) view.findViewById(R.id.card_pin);
-                deleteButton = (ImageView) view.findViewById(R.id.card_delete);
             }
         }
     }

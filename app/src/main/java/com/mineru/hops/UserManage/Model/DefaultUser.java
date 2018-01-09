@@ -18,6 +18,7 @@ public class DefaultUser {
     public DefaultUser(){
 
     }
+
     public int getm_num(){
         return m_num;
     }

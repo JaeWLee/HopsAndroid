@@ -109,7 +109,7 @@ public class FirebaseMethods {
         String imageUrl="https://firebasestorage.googleapis.com/v0/b/hops2lattop.appspot.com/o/Group%2Fa.png?alt=media&token=f3a2f8cb-d8e2-4f1e-97dc-2e07b64ebe66";
 
         UserAccountSettings settings = new UserAccountSettings(username,email);
-        User user = new User(userID,email,StringMainpulation.condenseUsername(username),0);
+        User user = new User(userID,email,StringMainpulation.condenseUsername(username),0,false);
         DefaultUser d_user = new DefaultUser(group_name,0,imageUrl);
 
         myRef.child(mContext.getString(R.string.dbname_users))

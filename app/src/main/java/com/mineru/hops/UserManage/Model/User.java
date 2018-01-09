@@ -9,8 +9,9 @@ public class User {
     private String email;
     private String user_name;
     private int card_num;
+    private boolean main_card;
 
-    public User(String user_id,String email,String username,int card_num){
+    public User(String user_id,String email,String username,int card_num,boolean main_card){
         this.uid = user_id;
         this.email=email;
         this.user_name=username;
@@ -18,6 +19,13 @@ public class User {
     }
     public User(){
 
+    }
+    public boolean getmain_card(){
+        return main_card=main_card;
+    }
+
+    public void setmain_card(boolean main_card){
+        this.main_card=main_card;
     }
     public int getCardNum(){
         return card_num;
@@ -54,6 +62,7 @@ public class User {
                 ", verify_email='" + email + '\'' +
                 ", username='" + user_name + '\'' +
                 ", card_num='"+ card_num +'\''+
+                ", main_card'"+main_card+'\''+
                 '}';
 
     }

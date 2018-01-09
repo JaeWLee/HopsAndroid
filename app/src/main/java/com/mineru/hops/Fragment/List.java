@@ -46,7 +46,7 @@ public class List extends Fragment {
     private TestAdapter mAdapter2;
     private GridLayoutManager recyclerManager = new GridLayoutManager(getContext(),2);
     private FloatingActionMenu fam;
-    private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
+    private com.github.clans.fab.FloatingActionButton fabQr,fabHopping;
 
     private CardDialog_List mCardDialog;
     public TextView tv_group_title;
@@ -56,7 +56,7 @@ public class List extends Fragment {
     public java.util.List<String> list_key = new ArrayList<>();
     public java.util.List<String> list_value = new ArrayList<>();
     public java.util.List<ImageDTO> imageDTOs = new ArrayList<>();
-    public String str_title;
+    public String str_title="All";
     public int m_num;
     public int test;
 
@@ -93,6 +93,7 @@ public class List extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Searching_friends.class);
+                intent.putExtra("title",str_title);
                 startActivity(intent);
             }
         });
@@ -121,11 +122,9 @@ public class List extends Fragment {
 
         fabQr = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_qr);
         fabHopping = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_hopping);
-        fabGroup = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_group);
         fam = (FloatingActionMenu) view.findViewById(R.id.fab_plus_list);
 
         fabQr.setOnClickListener(onButtonClick());
-        fabGroup.setOnClickListener(onButtonClick());
         fabHopping.setOnClickListener(onButtonClick());
         fam.setClosedOnTouchOutside(true);
 
@@ -137,6 +136,7 @@ public class List extends Fragment {
                 }
             }
         });
+
         //FirebaseDatabase.getInstance().getReference("Users").keepSynced(true);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group")
@@ -172,10 +172,6 @@ public class List extends Fragment {
                 }
                 else if(view == fabHopping){
                     Intent intent = new Intent(getActivity(), Hopping2.class);
-                    startActivity(intent);
-                }
-                else if(view == fabGroup){
-                    Intent intent = new Intent(getActivity(),AddGroupLatter1.class);
                     startActivity(intent);
                 }
                 fam.close(true);

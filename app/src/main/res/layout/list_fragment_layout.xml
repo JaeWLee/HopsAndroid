@@ -90,16 +90,7 @@
             fab:fab_colorPressed="#808080"
             fab:fab_colorRipple="#99FFFFFF"
             fab:fab_size="normal" />
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_peo"
-            fab:fab_label="Group 추가"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_colorPressed="#808080"
-            fab:fab_colorRipple="#99FFFFFF"
-            fab:fab_size="normal" />
+
 
     </com.github.clans.fab.FloatingActionMenu>
 
