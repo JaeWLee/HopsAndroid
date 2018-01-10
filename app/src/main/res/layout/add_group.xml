@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:text="그룹생성"
+        android:textSize="50dp" />
+
+    <EditText
+        android:id="@+id/edit_title"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:hint="그룹 이름을 입력하세요"
+        android:textSize="30dp" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_below="@+id/edit_title"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/round_view2"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp">
+    </ImageView>
+    <LinearLayout
+        android:id="@+id/list_layout"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/edit_title"
+        android:background="@drawable/test_view"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:clickable="true">
+        <TextView
+            android:id="@+id/change_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="그룹 이름"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="normal"
+            android:hint="사진을 넣어주세요"
+            android:textSize="15dp" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_below="@+id/list_layout"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="미리보기"/>
+    <Button
+        android:id="@+id/btn_next"
+        android:text="다음"
+        android:layout_below="@+id/tv2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+</RelativeLayout>
