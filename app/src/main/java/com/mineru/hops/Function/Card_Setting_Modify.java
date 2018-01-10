@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -28,11 +29,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.mineru.hops.R;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Card_Setting_Modify extends AppCompatActivity {
-
+    private static final String TAG ="Card_Setting Modify";
     public TextView deleteButton;
     public TextView btnSave;
     public TextView edit_name;
@@ -60,7 +63,10 @@ public class Card_Setting_Modify extends AppCompatActivity {
     public String backImageUrl;
     public String imageName;
     public String card_key;
-    public long card_num;
+    private long card_num;
+    public List<String> group_list1 = new ArrayList<>();
+    public List<String> group_list2 = new ArrayList<>();
+    public List<String> delete_list = new ArrayList<>();
 
     private FirebaseDatabase database;
     private FirebaseStorage storage;
@@ -84,8 +90,6 @@ public class Card_Setting_Modify extends AppCompatActivity {
         inputPosition = intent.getStringExtra("inputPosition");
         inputPhoneNumber = intent.getStringExtra("inputPhoneNumber");
         inputEmail = intent.getStringExtra("inputEmail");
-
-
 
         setlayout();
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -136,9 +140,32 @@ public class Card_Setting_Modify extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showDialog(view.getContext(),6);
-
             }
         });
+        database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                            if(snapshot.getKey().equals("card_num")){
+                                card_num= (long) snapshot.getValue();
+                                if(card_num==1L){
+                                    card_num=0;
+                                }else if(card_num==2L) {
+                                    card_num = 1L;
+                                }else if(card_num==3L) {
+                                    card_num = 2L;
+                                }
+                                Log.d(TAG,"card_num : "+card_num);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void setlayout(){
@@ -264,38 +291,17 @@ public class Card_Setting_Modify extends AppCompatActivity {
                 .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
                 database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card/")
                         .child(card_key).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                                            if(snapshot.getKey().equals("card_num")){
-                                                card_num= (long) snapshot.getValue();
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                        if(card_num==3L){
-                            card_num=2L;
-                        } else if(card_num==2L){
-                            card_num=1L;
-                        }else if(card_num==1L){
-                            card_num=0;
-                        }
-                        Map<String,Object> card= new HashMap<String,Object>();
+                    public void onSuccess(Void aVoid)
+                    {
+                        Map<String,Object> card= new HashMap<>();
                         card.put("card_num",card_num);
                         database.getReference().child("Users/" + auth.getCurrentUser().getUid()).updateChildren(card);
                         Toast.makeText(getApplicationContext(), "삭제 완료", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"test!!! 삭제완료");
+                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -308,9 +314,115 @@ public class Card_Setting_Modify extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getApplicationContext(), "삭제 실패", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group/").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    String name = snapshot.getKey();
+                    group_list1.add(name);//나의 그룹의 갯수
+                }
+                int size = group_list1.size();//All
+
+                for(int i=0;i<size;i++){//i=1
+                    final int t=i;
+                    database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group/"+group_list1.get(i)+"/friends").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                String name = snapshot.getKey();
+                                delete_list.add(name);
+                            }
+
+                            for (int i = 0; i < delete_list.size(); i++) {//해당 그룹안에 있는 ID갯수 = 1
+
+                                final int t = i;
+                                group_list2.clear();
+                                database.getReference().child("Users/" + delete_list.get(i) + "/Group").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            String name = snapshot.getKey();
+                                            if(group_list2.size()==0){
+                                                group_list2.add(name);//상대 ID의 그룹 갯수 계산
+
+                                            }else {
+                                                for(int check=0;check<group_list2.size();check++){
+                                                    if(!name.equals(group_list2.get(check))){
+                                                        group_list2.add(name);//상대 ID의 그룹 갯수 계산
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                        for (int i = 0; i < group_list2.size(); i++) {
+                                            final int t2=i;
+                                            database.getReference().child("Users/" + delete_list.get(t) + "/Group/" + group_list2.get(i) + "/friends").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(final DataSnapshot dataSnapshot) {
+                                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                        if (snapshot.getValue().equals(card_key)) {
+                                                            database.getReference().child("Users/" + delete_list.get(t) + "/Group/" + group_list2.get(t2) + "/friends/"+auth.getCurrentUser().getUid())
+                                                                    .removeValue();
+                                                            database.getReference().child("Users/"+delete_list.get(t)+"/Group/"+group_list2.get(t2)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                    for(DataSnapshot snapshot1 : dataSnapshot.getChildren()){
+                                                                        long m_num;
+                                                                        Map<String, Object> m_num_put = new HashMap<>();
+                                                                        if(snapshot1.getKey().equals("m_num")){
+                                                                            m_num=(long)snapshot1.getValue();
+                                                                            m_num-=1L;
+                                                                            Log.d(TAG,"test : "+m_num);
+                                                                            m_num_put.put("m_num",m_num);
+                                                                            database.getReference().child("Users/"+delete_list.get(t)+"/Group/"+group_list2.get(t2)).updateChildren(m_num_put);
+                                                                        }
+                                                                    }
+
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                                }
+                                                            });
+
+
+                                                        }
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
+
 
     }
 

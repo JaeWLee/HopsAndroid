@@ -34,6 +34,7 @@ import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.MakeCard.MakeCard1;
 import com.mineru.hops.R;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -233,9 +234,7 @@ public class Home extends Fragment {
                                 if(snapshot.getKey().equals("main_card")&&snapshot.getValue().equals(false)) {
                                     onStarClicked(database.getReference().child("Users/" + auth.getCurrentUser().getUid() + "/" + "Card").child(uidLists.get(position)));
                                 }
-                                Log.d(TAG, "test : " + snapshot.getValue() + " test 2 : " + imageDTOs.get(position).card_key);
                                 if(snapshot.getKey().equals("main_card")&&snapshot.getValue().equals(String.valueOf(imageDTOs.get(position).card_key))){
-                                    Log.d(TAG, "test : " + snapshot.getKey() + " test 2 : " + imageDTOs.get(position).card_key);
                                     onStarClicked(database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/"+"Card").child(uidLists.get(position)));
                                 }
                             }
