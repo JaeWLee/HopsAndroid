@@ -296,7 +296,25 @@ public class Card_Setting_Modify extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid)
                     {
-                        Map<String,Object> card= new HashMap<>();
+
+                        database.getReference().child("Users/"+auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                                    if (snapshot.getKey().equals("main_card") && snapshot.getValue().equals(card_key)){
+                                        Map<String,Object>  card1= new HashMap<>();
+                                        card1.put("main_card", false);
+                                        database.getReference().child("Users/" + auth.getCurrentUser().getUid()).updateChildren(card1);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        Map<String,Object>  card= new HashMap<>();
                         card.put("card_num",card_num);
                         database.getReference().child("Users/" + auth.getCurrentUser().getUid()).updateChildren(card);
                         Toast.makeText(getApplicationContext(), "삭제 완료", Toast.LENGTH_SHORT).show();
