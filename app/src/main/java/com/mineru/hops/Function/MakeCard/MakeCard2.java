@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.mineru.hops.R;
 import java.io.File;
@@ -32,7 +33,7 @@ public class MakeCard2 extends AppCompatActivity {
     private EditText inputPosition;
     private ImageView inputLogo;
     private Button btnNext;
-    private String imagePath;
+    private String imagePath="";
     private String[] str = new String[3];
 
     private static final String TAG = "MakeCard2";
@@ -64,16 +65,21 @@ public class MakeCard2 extends AppCompatActivity {
                 btnNext.setEnabled(false);
                 Handler h = new Handler();
                 h.postDelayed(new splashhandler2(),1000);
-                Intent intent = new Intent(MakeCard2.this, MakeCard3.class);
-                intent.putExtra("inputName", str[0]);
-                intent.putExtra("inputEmail", str[1]);
-                intent.putExtra("inputPhoneNumber", str[2]);
-                intent.putExtra("inputCompany", inputCompany.getText().toString());
-                intent.putExtra("inputPosition", inputPosition.getText().toString());
-                intent.putExtra("imagePath",imagePath);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                if(imagePath.equals("")){
+                    Toast.makeText(MakeCard2.this, "이미지를 넣으세요.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(MakeCard2.this, MakeCard3.class);
+                    intent.putExtra("inputName", str[0]);
+                    intent.putExtra("inputEmail", str[1]);
+                    intent.putExtra("inputPhoneNumber", str[2]);
+                    intent.putExtra("inputCompany", inputCompany.getText().toString());
+                    intent.putExtra("inputPosition", inputPosition.getText().toString());
+                    intent.putExtra("imagePath",imagePath);
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+
             }
         });
         inputLogo = (ImageView) findViewById(R.id.input_logo);
