@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/touch_outside"
+    android:orientation="vertical"
+    android:gravity="center">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_marginRight="50dp"
+       android:layout_marginLeft="50dp"
+       android:layout_height="160dp"
+       android:background="#ffffff">
+       <RelativeLayout
+           android:id="@+id/re"
+           android:layout_width="match_parent"
+           android:layout_height="60dp"
+           android:background="@color/colorPrimary">
+           <ImageView
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:src="@drawable/hops_logo"/>
+       </RelativeLayout>
+        <TextView
+            android:id="@+id/tv"
+            android:gravity="center"
+            android:layout_below="@+id/re"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:textColor="#000000"
+            android:text="삭제하시겠습니까?"/>
+        <TextView
+            android:id="@+id/btn_ok"
+            android:layout_toLeftOf="@+id/btn_no"
+            android:layout_below="@+id/tv"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:textColor="#ff0000"
+            android:text="확인"/>
+       <TextView
+           android:id="@+id/btn_no"
+           android:layout_below="@+id/tv"
+           android:layout_alignParentRight="true"
+           android:layout_marginRight="10dp"
+           android:gravity="center"
+           android:layout_marginTop="10dp"
+           android:layout_width="40dp"
+           android:layout_height="30dp"
+           android:textColor="#000000"
+           android:text="취소"/>
+   </RelativeLayout>
+
+</RelativeLayout>
