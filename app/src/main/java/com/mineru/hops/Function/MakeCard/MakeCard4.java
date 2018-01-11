@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -94,8 +95,6 @@ public class MakeCard4 extends AppCompatActivity {
                 h.postDelayed(new splashhandler(),1000);
                 upload(str[5]);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                Intent intent = new Intent(MakeCard4.this,Add_Firends_Group.class);
-                startActivity(intent);
                 finish();
             }
         });
