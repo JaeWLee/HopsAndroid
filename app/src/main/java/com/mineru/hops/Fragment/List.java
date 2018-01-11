@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionMenu;
@@ -21,13 +22,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mineru.hops.Function.AddGroup.Add_Group;
 import com.mineru.hops.Function.CardDialog_List;
 import com.mineru.hops.Function.Code_Scanner;
 import com.mineru.hops.Function.Hopping2;
+import com.mineru.hops.Function.CardDialog_List_Delete;
 import com.mineru.hops.UserManage.Model.Group_model;
 import com.mineru.hops.Function.Searching_friends;
 import com.mineru.hops.R;
 import com.mineru.hops.UserManage.Model.ImageDTO;
+import com.mineru.hops.UserManage.SignOutActivity;
 
 import java.util.ArrayList;
 
@@ -45,8 +49,9 @@ public class List extends Fragment {
     private TestAdapter mAdapter2;
     private GridLayoutManager recyclerManager = new GridLayoutManager(getContext(),2);
     private FloatingActionMenu fam;
-    private com.github.clans.fab.FloatingActionButton fabQr,fabHopping;
+    private com.github.clans.fab.FloatingActionButton fabQr,fabHopping,fabGroup;
 
+    private CardDialog_List_Delete mCardDialogDelete;
     private CardDialog_List mCardDialog;
     public TextView tv_group_title;
     public ImageView searching_btn;
@@ -58,6 +63,7 @@ public class List extends Fragment {
     public String str_title="All";
     public int m_num;
     public int test;
+    public ImageView setting;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -66,6 +72,7 @@ public class List extends Fragment {
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
+        setting = (ImageView) view.findViewById(R.id.setting);
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
         recyclerManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
             @Override
@@ -121,10 +128,12 @@ public class List extends Fragment {
 
         fabQr = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_qr);
         fabHopping = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_hopping);
+        fabGroup = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_group);
         fam = (FloatingActionMenu) view.findViewById(R.id.fab_plus_list);
 
         fabQr.setOnClickListener(onButtonClick());
         fabHopping.setOnClickListener(onButtonClick());
+        fabGroup.setOnClickListener(onButtonClick());
         fam.setClosedOnTouchOutside(true);
 
         fam.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +144,13 @@ public class List extends Fragment {
                 }
             }
         });
-
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),SignOutActivity.class);
+                startActivity(intent);
+            }
+        });
         //FirebaseDatabase.getInstance().getReference("Users").keepSynced(true);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         database.getReference().child("Users/"+auth.getCurrentUser().getUid()+"/Group")
@@ -171,6 +186,9 @@ public class List extends Fragment {
                 }
                 else if(view == fabHopping){
                     Intent intent = new Intent(getActivity(), Hopping2.class);
+                    startActivity(intent);
+                }else if(view == fabGroup){
+                    Intent intent = new Intent(getActivity(),Add_Group.class);
                     startActivity(intent);
                 }
                 fam.close(true);
@@ -246,6 +264,18 @@ public class List extends Fragment {
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             ((CustomViewHolder)holder).group_title.setText(group_models.get(position).group_name);
             ((CustomViewHolder)holder).group_number.setText(String.valueOf(group_models.get(position).m_num)+"개의 Hops");
+            ((CustomViewHolder)holder).list_layout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v){
+                    if(group_models.get(position).group_name.equals("All"))
+                        Toast.makeText(getActivity(), "삭제가 불가능합니다.", Toast.LENGTH_SHORT).show();
+                    else{
+                        mCardDialogDelete = new CardDialog_List_Delete(getActivity(),group_models.get(position).imageName,group_models.get(position).group_name);
+                        mCardDialogDelete.show();
+                    }
+                    return false;
+                }
+            });
 
             ((CustomViewHolder)holder).list_layout.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -361,5 +391,4 @@ public class List extends Fragment {
             }
         }
     }
-
 }
