@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.MessageBoard;
 import com.mineru.hops.R;
 import com.mineru.hops.UserManage.Model.MessageBoard_Model;
+import com.mineru.hops.UserManage.SignOutActivity;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -56,7 +56,7 @@ public class Latter extends Fragment {
     private List<MessageBoard_Model> messaageboard = new ArrayList<>();
     private String uid;
     private ArrayList<String> destinationUsers = new ArrayList<>();
-
+    public ImageView setting;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +65,15 @@ public class Latter extends Fragment {
         RecyclerView recyclerView  = (RecyclerView) view.findViewById(R.id.chatfragment_recyclerview);
         recyclerView.setAdapter(new ChatRecyclerViewAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        setting = (ImageView) view.findViewById(R.id.setting);
 
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),SignOutActivity.class);
+                startActivity(intent);
+            }
+        });
         fabWrite = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_write);
         fabGroup = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab_group);
         fam = (FloatingActionMenu) view.findViewById(R.id.fab_plus_latter);
@@ -98,17 +106,14 @@ public class Latter extends Fragment {
                             destinationUsers.add(user);
                         }
                     }
-                Log.d(TAG,"test size : "+destinationUsers.size());
                 imageDTOs.clear();
                 for(int t=0;t<destinationUsers.size();t++){
-                    Log.d(TAG,"test !!! " + destinationUsers.get(t));
                     FirebaseDatabase.getInstance().getReference().child("Users").child(destinationUsers.get(t)).child("Card")
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     ImageDTO imageDTO = dataSnapshot.getValue(ImageDTO.class);
                                     imageDTOs.add(imageDTO);
-                                    Log.d(TAG,"test iamgeDTOs : "+imageDTOs.get(0));
                                 }
 
                                 @Override
