@@ -20,19 +20,27 @@
         android:layout_width="100dp"
         android:layout_height="45dp"
         android:text="이름"
-        android:layout_toLeftOf="@+id/search_btn"
+        android:layout_toLeftOf="@+id/setting"
         android:layout_toRightOf="@+id/back_btn"
         android:gravity="center"
         android:textSize="30dp"/>
     <ImageView
+        android:id="@+id/setting"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/settings"/>
+    <ImageView
         android:id="@+id/search_btn"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/setting"
         android:src="@drawable/places_ic_search"/>
 
     <android.support.v7.widget.RecyclerView
@@ -90,7 +98,16 @@
             fab:fab_colorPressed="#808080"
             fab:fab_colorRipple="#99FFFFFF"
             fab:fab_size="normal" />
-
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_peo"
+            fab:fab_label="Group 추가"
+            fab:fab_colorNormal="@color/white"
+            fab:fab_colorPressed="#808080"
+            fab:fab_colorRipple="#99FFFFFF"
+            fab:fab_size="normal" />
 
     </com.github.clans.fab.FloatingActionMenu>
 
