@@ -12,4 +12,5 @@ public class Group_model {
     public int m_num;
     public String group_name;
     public String imageUrl;
+    public String imageName;
 }
