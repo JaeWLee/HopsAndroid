@@ -33,6 +33,7 @@ import com.mineru.hops.Function.Card_Setting_Modify;
 import com.mineru.hops.UserManage.Model.ImageDTO;
 import com.mineru.hops.Function.MakeCard.MakeCard1;
 import com.mineru.hops.R;
+import com.mineru.hops.UserManage.SignOutActivity;
 
 import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class Home extends Fragment {
     private FirebaseStorage storage;
     private FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fabAdd;
-
+    public ImageView setting;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment_layout,container,false);
@@ -67,12 +68,18 @@ public class Home extends Fragment {
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
-
+        setting = (ImageView) view.findViewById(R.id.setting);
         recyclerView = (RecyclerView) view.findViewById(R.id.home_fragment_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         final BoardRecyclerViewAdapter boardRecyclerViewAdapter = new BoardRecyclerViewAdapter();
         recyclerView.setAdapter(boardRecyclerViewAdapter);
-
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),SignOutActivity.class);
+                startActivity(intent);
+            }
+        });
 
         database.getReference().child("Users/"+auth.getCurrentUser().getUid()).orderByValue()
                 .addValueEventListener(new ValueEventListener() {
@@ -134,7 +141,6 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
                 if (view == fabAdd) {
-                    Toast.makeText(getContext(), "test : "+card_num, Toast.LENGTH_SHORT).show();
                     if(card_num>=3L){
                         Toast.makeText(getContext(), "더 이상 카드를 생성할 수 없습니다.", Toast.LENGTH_SHORT).show();
                         fam.close(true);
