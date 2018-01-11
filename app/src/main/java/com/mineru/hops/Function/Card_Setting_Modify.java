@@ -71,6 +71,7 @@ public class Card_Setting_Modify extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseStorage storage;
     private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
