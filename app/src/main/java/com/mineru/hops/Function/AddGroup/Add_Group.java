@@ -119,9 +119,6 @@ public class Add_Group extends AppCompatActivity {
                     btn_next.setEnabled(false);
                     Handler h = new Handler();
                     h.postDelayed(new splashhandler2(),1000);
-                    //Intent intent = new Intent();
-                    //intent.putExtra("group_name",change_title.toString());
-                    //intent.putExtra("imagePath",imagePath);
                     upload(imagePath);
                     finish();
                 }
