@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +31,13 @@ import com.mineru.hops.MessageBoard;
 import com.mineru.hops.R;
 import com.mineru.hops.UserManage.Model.MessageBoard_Model;
 import com.mineru.hops.UserManage.SignOutActivity;
+import com.nostra13.universalimageloader.utils.L;
 
+import java.security.KeyStore;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -50,21 +54,28 @@ public class Latter extends Fragment {
     private com.github.clans.fab.FloatingActionButton fabWrite,fabGroup;
     public ChatRecyclerViewAdapter mAdapter;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+    private FirebaseDatabase database;
+    private FirebaseAuth auth;
 
     public ArrayList<ImageDTO> imageDTOs = new ArrayList<>();
-
-    private List<MessageBoard_Model> messaageboard = new ArrayList<>();
-    private String uid;
     private ArrayList<String> destinationUsers = new ArrayList<>();
+    private ArrayList<String> destinationUsers_cardkey = new ArrayList<>();
+    private ArrayList<MessageBoard_Model> messaageboard = new ArrayList<>();
+
+    private String uid;
+    private String card_key;
     public ImageView setting;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.latter_fragment_layout,container,false);
-
+        database = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+        uid = auth.getCurrentUser().getUid();
         RecyclerView recyclerView  = (RecyclerView) view.findViewById(R.id.chatfragment_recyclerview);
         recyclerView.setAdapter(new ChatRecyclerViewAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+
         setting = (ImageView) view.findViewById(R.id.setting);
 
         setting.setOnClickListener(new View.OnClickListener() {
@@ -90,9 +101,10 @@ public class Latter extends Fragment {
                 }
             }
         });
+
         mAdapter = new ChatRecyclerViewAdapter();
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase.getInstance().getReference().child("MessageBoards").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("MessageBoards").orderByChild("users/"+uid)
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 messaageboard.clear();
@@ -100,20 +112,32 @@ public class Latter extends Fragment {
                     messaageboard.add(item.getValue(MessageBoard_Model.class));
                 }
                 destinationUsers.clear();
-                for(int i=0;i<messaageboard.size();i++)
+                destinationUsers_cardkey.clear();
+                for(int i=0;i<messaageboard.size();i++){
                     for(String user: messaageboard.get(i).users.keySet()){
-                        if(!user.equals(uid)){
-                            destinationUsers.add(user);
+                        for(String key: messaageboard.get(i).users.values()) {
+                            if (!user.equals(uid)) {
+                                destinationUsers.add(user);
+                                destinationUsers_cardkey.add(key);
+                                break;
+                            }
                         }
                     }
-                imageDTOs.clear();
-                for(int t=0;t<destinationUsers.size();t++){
-                    FirebaseDatabase.getInstance().getReference().child("Users").child(destinationUsers.get(t)).child("Card")
+                }
+
+                int size = destinationUsers.size();
+                for(int i=0;i<size;i++){
+                    final int t=i;
+                    database.getReference().child("Users/"+destinationUsers.get(i)+"/Card/")
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    ImageDTO imageDTO = dataSnapshot.getValue(ImageDTO.class);
-                                    imageDTOs.add(imageDTO);
+                                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                                        if(snapshot.getKey().equals(destinationUsers_cardkey.get(t))){
+                                            ImageDTO imageDTO = snapshot.getValue(ImageDTO.class);
+                                            imageDTOs.add(imageDTO);
+                                        }
+                                    }
                                 }
 
                                 @Override

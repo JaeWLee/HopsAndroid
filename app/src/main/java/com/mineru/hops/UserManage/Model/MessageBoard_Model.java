@@ -10,9 +10,9 @@ import java.util.Map;
 public class MessageBoard_Model {
 
 
-    public Map<String,Boolean> users = new HashMap<>();//채팅방의 유저들
-    public Map<String,Comment> comments = new HashMap<>();//
-
+    public Map<String,String> users = new HashMap<>();//채팅방의 유저들
+    public Map<String,Comment> comments = new HashMap<>();//내용
+    public Object lasttime;
     public static class Comment{
        public String uid;
        public String message;

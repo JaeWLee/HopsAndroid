@@ -60,17 +60,21 @@ public class MessageBoard extends AppCompatActivity{
     private String imageUrl;
 
     private String uid;
+    private String card_key;
     private String MessageBoardUid;
     private RecyclerView recyclerView;
     private String pushToken;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+    private FirebaseDatabase database;
+    private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messageboard_layout);
 
-
+        database = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         destinatonUid = getIntent().getStringExtra("Uid");
         inputName = getIntent().getStringExtra("inputName");
@@ -124,8 +128,8 @@ public class MessageBoard extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 MessageBoard_Model message = new MessageBoard_Model();
-                message.users.put(uid,true);
-                message.users.put(destinatonUid,true);
+                message.users.put(uid,uid);
+                message.users.put(destinatonUid,destinatonUid);
 
                 if(MessageBoardUid == null){
                     btn.setEnabled(false);
@@ -133,6 +137,7 @@ public class MessageBoard extends AppCompatActivity{
                         @Override
                         public void onSuccess(Void aVoid) {
                             checkMessageBoard();
+                            btn.setEnabled(true);
                         }
                     });
                 }else {
@@ -190,7 +195,8 @@ public class MessageBoard extends AppCompatActivity{
     }
     void checkMessageBoard(){
 
-        FirebaseDatabase.getInstance().getReference().child("MessageBoards").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("MessageBoards").orderByChild("users/"+uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot item : dataSnapshot.getChildren()){
@@ -223,7 +229,6 @@ public class MessageBoard extends AppCompatActivity{
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     imageDto  = dataSnapshot.getValue(ImageDTO.class);
                     getMessageList();
-
                 }
 
                 @Override
